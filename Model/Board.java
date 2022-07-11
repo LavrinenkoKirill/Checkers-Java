@@ -10,7 +10,7 @@ public class Board {
     public static final int BLACK_PLAYER = 1;
     public static final int WHITE_PLAYER = 2;
     protected Cell[][] board = new Cell[board_size][board_size];
-    boolean move = white;
+    protected boolean  move = white;
     public static final int W_WIN = 1;
     public static final int B_WIN = 2;
     public static final int CONTINUE = 3;
@@ -32,7 +32,6 @@ public class Board {
                 }
             }
         }
-        startingPosition();
     }
 
     public void startingPosition() {
@@ -210,7 +209,16 @@ public class Board {
                     }
                     else {
                         System.out.println("noooooo");
-                        cutQueenEnemies(board[i + 1][j - 1],destination);
+                        if (checkQueenEnemies(board[i + 1][j - 1], destination, 0,0) == true){
+                            if (move == white) black_counter--;
+                            else if (move == black) white_counter--;
+                          //  board[i + 1][j - 1].state = player;
+                          //  board[i + 1][j - 1].queen = true;
+                            source.queen = false;
+                            source.state = FREE;
+                            board[i][j].state = FREE;
+                            cutQueenEnemies(board[i + 1][j - 1],destination);
+                        }
                     }
                 }
             }
@@ -236,7 +244,16 @@ public class Board {
                         source.queen = false;
                         board[i][j].state = FREE;
                     }
-                    else cutQueenEnemies(board[i + 1][j + 1],destination);
+                    else if (checkQueenEnemies(board[i + 1][j + 1],destination,1,0) == true) {
+                        if (move == white) black_counter--;
+                        else if (move == black) white_counter--;
+                      //  board[i + 1][j + 1].state = player;
+                      //  board[i + 1][j + 1].queen = true;
+                        source.state = FREE;
+                        source.queen = false;
+                        board[i][j].state = FREE;
+                        cutQueenEnemies(board[i + 1][j + 1],destination);
+                    }
 
                 }
             }
@@ -262,7 +279,15 @@ public class Board {
                         source.queen = false;
                         board[i][j].state = FREE;
                     }
-                    else cutQueenEnemies(board[i - 1][j - 1],destination);
+                    else if (checkQueenEnemies(board[i - 1][j - 1],destination,2,0) == true){
+                        if (move == white) black_counter--;
+                        else if (move == black) white_counter--;
+                      //  board[i - 1][j - 1].state = player;
+                      //  board[i - 1][j - 1].queen = true;
+                        source.queen = false;
+                        board[i][j].state = FREE;
+                        cutQueenEnemies(board[i - 1][j - 1],destination);
+                    }
                 }
             }
             if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
@@ -287,7 +312,15 @@ public class Board {
                         board[i][j].state = FREE;
 
                     }
-                    else cutQueenEnemies(board[i - 1][j + 1],destination);
+                    else if (checkQueenEnemies(board[i - 1][j + 1],destination,3,0) == true){
+                        if (move == white) black_counter--;
+                        else if (move == black) white_counter--;
+                       // board[i - 1][j + 1].state = player;
+                        source.queen = false;
+                       // board[i - 1][j + 1].queen = true;
+                        board[i][j].state = FREE;
+                        cutQueenEnemies(board[i - 1][j + 1],destination);
+                    }
                 }
             }
             if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
@@ -329,6 +362,7 @@ public class Board {
                         }
                         else {
                             if (checkQueenEnemies(board[i + 1][j - 1], destination, 0,0) == false) break;
+                            else return true;
                         }
                     }
                 }
@@ -370,6 +404,7 @@ public class Board {
                         else {
                             System.out.println("why you");
                             if (checkQueenEnemies(board[i + 1][j + 1],destination,1,0) == false) break;
+                            else return true;
                         }
                     }
                 }
@@ -409,7 +444,10 @@ public class Board {
                                 else return false;
                             }
                         }
-                        else if (checkQueenEnemies(board[i - 1][j - 1],destination,2,0) == false) break;
+                        else {
+                            if (checkQueenEnemies(board[i - 1][j - 1], destination, 2, 0) == false) break;
+                            else return true;
+                        }
                     }
                 }
 
@@ -447,7 +485,10 @@ public class Board {
                                 else return false;
                             }
                         }
-                        else if (checkQueenEnemies(board[i-1][j+1],destination,3,0) == false)break;
+                        else {
+                            if (checkQueenEnemies(board[i - 1][j + 1],destination,3,0) == false)break;
+                            else return true;
+                        }
                     }
                 }
 
@@ -1027,7 +1068,7 @@ public class Board {
         return s;
     }
 
-    public int getBoard_size(){
+    public int getBoardSize(){
         return board_size;
     }
 
@@ -1068,6 +1109,28 @@ public class Board {
             board[row][column].queen = true;
         }
         else board[row][column].queen = false;
+    }
+
+    public void setMove(boolean mv){
+        if (mv == true){
+            move = black;
+        }
+        else move = white;
+    }
+
+    public void setWhiteCounter(int number){
+        white_counter = number;
+    }
+
+    public void setBlackCounter(int number){
+        black_counter = number;
+    }
+
+    public int getWhiteCounter(){
+        return white_counter;
+    }
+    public int getBlackCounter(){
+        return black_counter;
     }
 
 

@@ -45,9 +45,9 @@ public class BoardView extends JButton {
             }
         }
 
-        for (int i = 0; i < board.getBoard_size(); i++){
+        for (int i = 0; i < board.getBoardSize(); i++){
             int cy = OFFSET_X + i * BOX_SIZE + BOX_PADDING;
-            for (int j = 0; j < board.getBoard_size(); j++){
+            for (int j = 0; j < board.getBoardSize(); j++){
                 int cx = OFFSET_Y + j * BOX_SIZE + BOX_PADDING;
                 if (board.getCell(j, i).isFREE()) {
                     continue;

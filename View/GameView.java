@@ -18,6 +18,7 @@ public class GameView extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         createOptionalMenu();
         Board brd = new Board();
+        brd.startingPosition();
         BoardView board = new BoardView(brd);
         setContentPane(board);
         setUndecorated(true);
@@ -54,6 +55,25 @@ public class GameView extends JFrame {
         });
         JMenuItem load = new JMenuItem("Load from File");
         fileMenu.add(load);
+        load.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Load file");
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int result = fileChooser.showSaveDialog(fileChooser);
+                if (result == JFileChooser.APPROVE_OPTION ) {
+                    try {
+                        BoardReader br = new BoardReader(fileChooser.getSelectedFile());
+                        BoardView.board = br.load();
+                        br.close();
+                        JOptionPane.showMessageDialog(fileChooser, "File '" + fileChooser.getSelectedFile() + " loaded");
+                    }
+                    catch (IOException b){
+                        System.out.println("File not found");
+                    }
+                }
+            }
+        });
         menuBar.add(fileMenu);
         JButton turn = new JButton("Previous turn");
         menuBar.add(turn);
