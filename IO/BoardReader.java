@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 import Model.*;
+import java.awt.Point;
 
 public class BoardReader extends FileReader {
     public BoardReader(File file) throws IOException {
@@ -60,8 +61,58 @@ public class BoardReader extends FileReader {
                 Exception e = new Exception("Incorrect file");
                 throw e;
             }
-            board.setWhiteCounter(scan.nextInt());
-            board.setBlackCounter(scan.nextInt());
+            if (scan.hasNextInt()){
+                board.setWhiteCounter(scan.nextInt());
+            }
+            else {
+                Exception e = new Exception("Incorrect file");
+                throw e;
+            }
+            if (scan.hasNextInt()){
+                board.setBlackCounter(scan.nextInt());
+            }
+            else {
+                Exception e = new Exception("Incorrect file");
+                throw e;
+            }
+            scan.skip("\n");
+            if (scan.hasNextLine()){
+                str = scan.nextLine();
+                System.out.println(str);
+                if (str.lastIndexOf("Match History") != -1) {
+                    Point source = new Point(-1,-1);
+                    Point destination=  new Point(-1,-1);
+                    boolean flag = true;
+                    while (scan.hasNextInt()){
+                        source.x = scan.nextInt();
+                        if (scan.hasNextInt()) source.y = scan.nextInt();
+                        else flag = false;
+                        if (scan.hasNextInt()) destination.x = scan.nextInt();
+                        else flag = false;
+                        if (scan.hasNextInt()) destination.y = scan.nextInt();
+                        else flag = false;
+
+                        if (flag == true){
+                            System.out.println(source.x);
+                            System.out.println(source.y);
+
+                            System.out.println(destination.x);
+                            System.out.println(destination.y);
+                            Move mv = new Move(source,destination);
+                            board.addMove(mv);
+                        }
+                        else {
+                            Exception e = new Exception("Ne chitaet");
+                            throw e;
+                        }
+                    }
+                }
+                else {
+                    Exception e = new Exception("OH my God");
+                    throw e;
+                }
+            }
+
             return board;
         }
         catch(Exception e){

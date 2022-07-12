@@ -64,9 +64,16 @@ public class GameView extends JFrame {
                 if (result == JFileChooser.APPROVE_OPTION ) {
                     try {
                         BoardReader br = new BoardReader(fileChooser.getSelectedFile());
-                        BoardView.board = br.load();
-                        br.close();
-                        JOptionPane.showMessageDialog(fileChooser, "File '" + fileChooser.getSelectedFile() + " loaded");
+                        Board b = br.load();
+                        if (b != null) {
+                            System.out.println("+");
+                            BoardView.board = b;
+                            br.close();
+                            JOptionPane.showMessageDialog(fileChooser, "File '" + fileChooser.getSelectedFile() + " loaded");
+                        }
+                        else {
+                             JOptionPane.showMessageDialog(load,"Load was failed");
+                        }
                     }
                     catch (IOException b){
                         System.out.println("File not found");
@@ -76,6 +83,16 @@ public class GameView extends JFrame {
         });
         menuBar.add(fileMenu);
         JButton turn = new JButton("Previous turn");
+        turn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Board b = BoardView.board.getPreviousTurn();
+                if (b!=null){
+                    BoardView.board = b;
+                    repaint();
+                }
+                else JOptionPane.showMessageDialog(turn,"Match History is empty");
+            }
+        });
         menuBar.add(turn);
         setJMenuBar(menuBar);
 

@@ -1,5 +1,8 @@
 package Model;
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class Board {
     private final int board_size = 8;
     private int white_counter = 12;
@@ -10,6 +13,7 @@ public class Board {
     public static final int BLACK_PLAYER = 1;
     public static final int WHITE_PLAYER = 2;
     protected Cell[][] board = new Cell[board_size][board_size];
+    protected LinkedList<Move> matchHistory;
     protected boolean  move = white;
     public static final int W_WIN = 1;
     public static final int B_WIN = 2;
@@ -32,6 +36,8 @@ public class Board {
                 }
             }
         }
+
+        matchHistory = new LinkedList<Move>();
     }
 
     public void startingPosition() {
@@ -179,7 +185,6 @@ public class Board {
     }
 
     public void doQueenMove(Cell source,Cell destination){
-        System.out.println("zashel");
         int enemy = -1;
         int player = -1;
         if (move == white)
@@ -198,7 +203,6 @@ public class Board {
             if (board[i][j].state == enemy && j != 0 && i != 7) {
                 if (board[i + 1][j - 1].state == FREE) {
                     if (checkDistance(board[i + 1][j - 1], board[i + 1][j - 1], destination) >= 0) {
-                        System.out.println("opachki");
                         if (move == white) black_counter--;
                         else if (move == black) white_counter--;
                         board[i + 1][j - 1].state = player;
@@ -208,12 +212,9 @@ public class Board {
                         board[i][j].state = FREE;
                     }
                     else {
-                        System.out.println("noooooo");
                         if (checkQueenEnemies(board[i + 1][j - 1], destination, 0,0) == true){
                             if (move == white) black_counter--;
                             else if (move == black) white_counter--;
-                          //  board[i + 1][j - 1].state = player;
-                          //  board[i + 1][j - 1].queen = true;
                             source.queen = false;
                             source.state = FREE;
                             board[i][j].state = FREE;
@@ -247,8 +248,6 @@ public class Board {
                     else if (checkQueenEnemies(board[i + 1][j + 1],destination,1,0) == true) {
                         if (move == white) black_counter--;
                         else if (move == black) white_counter--;
-                      //  board[i + 1][j + 1].state = player;
-                      //  board[i + 1][j + 1].queen = true;
                         source.state = FREE;
                         source.queen = false;
                         board[i][j].state = FREE;
@@ -282,8 +281,6 @@ public class Board {
                     else if (checkQueenEnemies(board[i - 1][j - 1],destination,2,0) == true){
                         if (move == white) black_counter--;
                         else if (move == black) white_counter--;
-                      //  board[i - 1][j - 1].state = player;
-                      //  board[i - 1][j - 1].queen = true;
                         source.queen = false;
                         board[i][j].state = FREE;
                         cutQueenEnemies(board[i - 1][j - 1],destination);
@@ -315,9 +312,7 @@ public class Board {
                     else if (checkQueenEnemies(board[i - 1][j + 1],destination,3,0) == true){
                         if (move == white) black_counter--;
                         else if (move == black) white_counter--;
-                       // board[i - 1][j + 1].state = player;
                         source.queen = false;
-                       // board[i - 1][j + 1].queen = true;
                         board[i][j].state = FREE;
                         cutQueenEnemies(board[i - 1][j + 1],destination);
                     }
@@ -345,7 +340,6 @@ public class Board {
             enemy = WHITE_PLAYER;
         }
             int i = source.row;
-            System.out.println("cycle 1");
             for (int j = source.column; j >= 0; j--) {
                 if (i >= board_size) break;
                 if (board[i][j].state == enemy && j != 0 && i != 7) {
@@ -355,7 +349,6 @@ public class Board {
                             else {
                                 if (i < friend.x && j > friend.y) return true;
                                 else {
-                                    System.out.println("cho?");
                                     return false;
                                 }
                             }
@@ -377,7 +370,6 @@ public class Board {
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
                     if (friend.x == -1 && friend.y == -1) return true;
                     else {
-                        System.out.println("zashel 1.1");
                         if (i < friend.x && j > friend.y) return true;
                         else return false;
                     }
@@ -388,7 +380,6 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
-        System.out.println("cycle 2");
             for (int j = source.column; j < board_size; j++) {
                 if (i >= board_size) break;
                 if (board[i][j].state == enemy && i != 7 && j != 7) {
@@ -396,13 +387,11 @@ public class Board {
                         if (checkDistance(board[i + 1][j + 1],board[i + 1][j + 1],destination) >= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
-                                System.out.println("zashel 2");
                                 if (i < friend.x && j < friend.y) return true;
                                 else return false;
                             }
                         }
                         else {
-                            System.out.println("why you");
                             if (checkQueenEnemies(board[i + 1][j + 1],destination,1,0) == false) break;
                             else return true;
                         }
@@ -417,10 +406,8 @@ public class Board {
                 }
 
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
-                    System.out.println("norm");
                     if (friend.x == -1 && friend.y == -1) return true;
                     else {
-                        System.out.println("zashel 2.2");
                         if (i < friend.x && j < friend.y) return true;
                         else return false;
                     }
@@ -431,7 +418,6 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
-        System.out.println("cycle 3");
             for (int j = source.column;j >= 0;j--){
                 if (i < 0) break;
                 if (board[i][j].state == enemy && i != 0 && j!=0){
@@ -439,7 +425,6 @@ public class Board {
                         if (checkDistance(board[i - 1][j - 1],board[i - 1][j - 1],destination)>= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
-                                System.out.println("zashel 3");
                                 if (i > friend.x && j > friend.y) return true;
                                 else return false;
                             }
@@ -461,7 +446,6 @@ public class Board {
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
                     if (friend.x == -1 && friend.y == -1) return true;
                     else {
-                        System.out.println("zashel 3.3");
                         if (i > friend.x && j > friend.y) return true;
                         else return false;
                     }
@@ -472,7 +456,6 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
-        System.out.println("cycle 4");
             for (int j = source.column;j < board_size;j++){
                 if (i < 0) break;
                 if (board[i][j].state == enemy && j != 7 && i != 0){
@@ -480,7 +463,6 @@ public class Board {
                         if (checkDistance(board[i - 1][j + 1], board[i - 1][j + 1], destination) >= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
-                                System.out.println("zashel 4");
                                 if (i > friend.x && j < friend.y) return true;
                                 else return false;
                             }
@@ -502,7 +484,6 @@ public class Board {
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
                     if (friend.x == -1 && friend.y == -1) return true;
                     else {
-                        System.out.println("zashel 4.4");
                         if (i > friend.x && j < friend.y) return true;
                         else return false;
                     }
@@ -770,6 +751,7 @@ public class Board {
             }
 
             if (destination.state != FREE) {
+                System.out.print("Destination state is");
                 System.out.println(destination.state);
                 Exception e = new Exception("Destination cell is occupied by another checker");
                 throw e;
@@ -803,7 +785,6 @@ public class Board {
                     }
 
                      if (destination.row - source.row > 1 || source.row - destination.row > 1 ){
-                        System.out.println("+");
                         if (checkEnemies(source,destination,0)>=0){
                             return true;
                         }
@@ -872,12 +853,33 @@ public class Board {
         return false;
     }
 
+    public void addMove(Move mv){
+        this.matchHistory.add(mv);
+    }
+
+    public boolean isHistoryEmpty(){
+        if (this.matchHistory.isEmpty()) return true;
+        else return false;
+    }
+
+    public int HistorySize(){
+        return this.matchHistory.size();
+    }
+
+    public Move getHistoryMove(int index){
+        return this.matchHistory.get(index);
+    }
+
     public void doMove(Cell source,Cell destination){
         if (isWin() != CONTINUE) {
             System.out.println("Game have already finished");
         }
         else {
             if (isValidMove(source, destination) == true) {
+                Point src = new Point(source.row,source.column);
+                Point dest = new Point(destination.row,destination.column);
+                Move mv = new Move(src,dest);
+                this.addMove(mv);
                 if (source.queen == false) {
                     if ((destination.row - source.row == 1 || source.row - destination.row == 1) && (destination.column - source.column == 1 || source.column - destination.column == 1)) {
                     }
@@ -1060,7 +1062,10 @@ public class Board {
                 sb.append(board[i][j].row);
                 sb.append("-");
                 sb.append(board[i][j].column);
-                sb.append(" ");
+                sb.append("-");
+                if (board[i][j].state == WHITE_PLAYER) sb.append("white ");
+                if (board[i][j].state == BLACK_PLAYER) sb.append("black ");
+                if (board[i][j].state == FREE) sb.append("free ");
             }
             sb.append("\n");
         }
@@ -1132,6 +1137,31 @@ public class Board {
     public int getBlackCounter(){
         return black_counter;
     }
+
+    public Board getPreviousTurn(){
+        try {
+            if (this.matchHistory.isEmpty()) {
+                Exception e = new Exception("Empty match history");
+                throw e;
+            }
+            else {
+                Board brd = new Board();
+                brd.startingPosition();
+                for (int i = 0; i < matchHistory.size() - 1; i++) {
+                    brd.doMove(brd.board[matchHistory.get(i).getSource().x][matchHistory.get(i).getSource().y],brd.board[matchHistory.get(i).getDestination().x][matchHistory.get(i).getDestination().y]);
+                }
+
+                return brd;
+            }
+        }
+
+        catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+
 
 
 }

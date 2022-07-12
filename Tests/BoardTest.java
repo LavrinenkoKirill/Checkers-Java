@@ -111,7 +111,6 @@ class BoardTest {
             System.out.println(board.getWhiteCounter());
             assertEquals(true,flag);
 
-
         }
         catch (IOException e){
             System.out.println("Wrong path");

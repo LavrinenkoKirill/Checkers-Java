@@ -32,6 +32,11 @@ public class Cell {
         else return false;
     }
 
+    public void Str(){
+        System.out.println(row);
+        System.out.println(column);
+    }
+
     public boolean isQUEEN(){
         if (this.queen == true) return true;
         else return false;

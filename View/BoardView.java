@@ -107,7 +107,7 @@ public class BoardView extends JButton {
                 if (board.getCell(j, i).isQUEEN()) {
                     g.setColor(new Color(255, 240, 0));
                     g.drawOval(cy - 2, cx - 1, CHECKER_SIZE, CHECKER_SIZE);
-                    g.drawOval(cy + 1, cy, CHECKER_SIZE - 4, CHECKER_SIZE - 4);
+                    g.drawOval(cy + 1, cx, CHECKER_SIZE - 4, CHECKER_SIZE - 4);
                 }
             }
             String player = board.isWhiteMove()? "WHITE TURN" : "BLACK TURN";
