@@ -23,6 +23,8 @@ public class MainMenu extends JFrame {
         contents.add(button2);
         ActionListener actionListener = new TestActionListener();
         button1.addActionListener(actionListener);
+        ActionListener computerListener = new TestChooseMenuListener();
+        button2.addActionListener(computerListener);
         setContentPane(contents);
         setVisible(true);
 
@@ -34,4 +36,50 @@ public class MainMenu extends JFrame {
             new GameView();
         }
     }
+
+    public class TestChooseMenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
+            dispose();
+            JFrame chooseMenu = new JFrame();
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setSize(600,400);
+            JPanel contents = new JPanel();
+            JLabel name = new JLabel("Choose side");
+            name.setFont(new Font("Serif", Font.PLAIN, 50));
+            name.setPreferredSize(new Dimension(300,100));
+            JButton button1 = new JButton("WHITE CHECKERS");
+            button1.setPreferredSize(new Dimension(500,100));
+            ActionListener black_side = new ComputerBlackCreateListener();
+            button1.addActionListener(black_side);
+            JButton button2 = new JButton("BLACK CHECKERS");
+            button2.setPreferredSize(new Dimension(500,100));
+            ActionListener white_side = new ComputerWhiteCreateListener();
+            button1.addActionListener(white_side);
+            contents.add(name);
+            contents.add(button1);
+            contents.add(button2);
+            setContentPane(contents);
+            setVisible(true);
+        }
+    }
+
+    public class ComputerBlackCreateListener implements ActionListener {
+        boolean black = true;
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
+            dispose();
+            new GameView();
+        }
+    }
+
+    public class ComputerWhiteCreateListener implements ActionListener {
+        boolean white = false;
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
+            dispose();
+            new GameView();
+        }
+    }
+
 }
