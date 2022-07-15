@@ -62,7 +62,7 @@ public class CheckersAI {
         else {
             if (side == black){
                 for (int i = 0; i < checkers.size(); i++){
-                    if (b.getCell(checkers.get(i).row + 1,checkers.get(i).column -1).isWHITE()){
+                    if (checkers.get(i).column -1 != 0 && b.getCell(checkers.get(i).row + 1,checkers.get(i).column -1).isWHITE()){
                         for (int j = 0;j < moves.size();j++){
                             if (moves.get(j).getDestinationX() == checkers.get(i).row - 1 && moves.get(j).getDestinationY() == checkers.get(i).column + 1){
                                 b.doMove(b.getCell(moves.get(j).getSourceX(),moves.get(j).getSourceY()),b.getCell(moves.get(j).getDestinationX(),moves.get(j).getDestinationY()));
@@ -86,6 +86,7 @@ public class CheckersAI {
                     if (b.getCell(checkers.get(i).row - 1,checkers.get(i).column -1).isBLACK()){
                         for (int j = 0;j < moves.size();j++){
                             if (moves.get(j).getDestinationX() == checkers.get(i).row + 1 && moves.get(j).getDestinationY() == checkers.get(i).column + 1){
+                                System.out.println("1");
                                 b.doMove(b.getCell(moves.get(j).getSourceX(),moves.get(j).getSourceY()),b.getCell(moves.get(j).getDestinationX(),moves.get(j).getDestinationY()));
                                 return;
                             }
@@ -95,6 +96,7 @@ public class CheckersAI {
                     if (b.getCell(checkers.get(i).row - 1,checkers.get(i).column + 1).isBLACK()){
                         for (int j = 0;j < moves.size();j++){
                             if (moves.get(j).getDestinationX() == checkers.get(i).row + 1 && moves.get(j).getDestinationY() == checkers.get(i).column - 1){
+                                System.out.println("2");
                                 b.doMove(b.getCell(moves.get(j).getSourceX(),moves.get(j).getSourceY()),b.getCell(moves.get(j).getDestinationX(),moves.get(j).getDestinationY()));
                                 return;
                             }
@@ -108,6 +110,7 @@ public class CheckersAI {
         }
 
         int random = (int) (Math.random() * (moves.size()));
+        System.out.println("3");
         b.doMove(b.getCell(moves.get(random).getSourceX(),moves.get(random).getSourceY()),b.getCell(moves.get(random).getDestinationX(),moves.get(random).getDestinationY()));
 
     }

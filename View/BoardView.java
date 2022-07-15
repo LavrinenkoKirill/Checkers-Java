@@ -11,14 +11,34 @@ public class BoardView extends JButton {
     protected static Board board;
     private static final int PADDING = 16;
     private Point selected;
+    private boolean soloMode;
+    private CheckersAI computer;
+    private GameView view;
 
 
-    public BoardView(Board b){
+    public BoardView(Board b,GameView vw){
         board = b;
         board.startingPosition();
         selected = new Point(-1,-1);
+        soloMode = false;
+        repaint();
+        view = vw;
+        this.addActionListener(new MouseListener());
+    }
+
+    public BoardView(Board b,boolean side,GameView vw){
+        board = b;
+        board.startingPosition();
+        computer = new CheckersAI(side,board);
+        selected = new Point(-1,-1);
+        soloMode = true;
         repaint();
         this.addActionListener(new MouseListener());
+        if (side == false) {
+            computer.generateAvailableMoves(board);
+            computer.chooseMove(board);
+            repaint();
+        }
     }
 
     public void paint(Graphics g){
@@ -57,6 +77,7 @@ public class BoardView extends JButton {
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
                     g.setColor(Color.LIGHT_GRAY);
                     g.drawOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
+
                     g.setColor(Color.BLACK);
                     g.fillOval(cy, cx, CHECKER_SIZE, CHECKER_SIZE);
                     g.setColor(Color.LIGHT_GRAY);
@@ -160,26 +181,31 @@ public class BoardView extends JButton {
 
     private void MouseClick(int x, int y) {
 
-        if (board.isWin() != Board.CONTINUE) {
-            return;
-        }
-
-        final int W = getWidth(), H = getHeight();
-        final int DIM = W < H? W : H, BOX_SIZE = (DIM - 2 * PADDING) / 8;
-        final int OFFSET_X = (W - BOX_SIZE * 8) / 2;
-        final int OFFSET_Y = (H - BOX_SIZE * 8) / 2;
-        x = (x - OFFSET_X) / BOX_SIZE;
-        y = (y - OFFSET_Y) / BOX_SIZE;
-        if (this.selected.x == -1) {
-            this.selected.x = x;
-            this.selected.y = y;
-        }
-        else {
-            board.doMove(board.getCell(this.selected.y,this.selected.x),board.getCell(y,x));
-            repaint();
-            this.selected.x = -1;
-            this.selected.y = -1;
-        }
+            if (board.isWin() != Board.CONTINUE) {
+                return;
+            }
+            final int W = getWidth(), H = getHeight();
+            final int DIM = W < H ? W : H, BOX_SIZE = (DIM - 2 * PADDING) / 8;
+            final int OFFSET_X = (W - BOX_SIZE * 8) / 2;
+            final int OFFSET_Y = (H - BOX_SIZE * 8) / 2;
+            x = (x - OFFSET_X) / BOX_SIZE;
+            y = (y - OFFSET_Y) / BOX_SIZE;
+            if (this.selected.x == -1) {
+                this.selected.x = x;
+                this.selected.y = y;
+            }
+            else {
+                boolean side;
+                if (board.isWhiteMove()) side = false;
+                else side = true;
+                if (board.isValidMove(board.getCell(this.selected.y, this.selected.x), board.getCell(y, x))){
+                    view.createMoveButton(this.selected.y,this.selected.x,y,x,side);
+                }
+                board.doMove(board.getCell(this.selected.y, this.selected.x), board.getCell(y, x));
+                repaint();
+                this.selected.x = -1;
+                this.selected.y = -1;
+            }
     }
 
 

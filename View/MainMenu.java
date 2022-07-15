@@ -55,7 +55,7 @@ public class MainMenu extends JFrame {
             JButton button2 = new JButton("BLACK CHECKERS");
             button2.setPreferredSize(new Dimension(500,100));
             ActionListener white_side = new ComputerWhiteCreateListener();
-            button1.addActionListener(white_side);
+            button2.addActionListener(white_side);
             contents.add(name);
             contents.add(button1);
             contents.add(button2);
@@ -69,7 +69,7 @@ public class MainMenu extends JFrame {
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
-            new GameView();
+            new GameView(black);
         }
     }
 
@@ -78,7 +78,7 @@ public class MainMenu extends JFrame {
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
-            new GameView();
+            new GameView(white);
         }
     }
 

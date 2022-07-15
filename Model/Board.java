@@ -1,6 +1,5 @@
 package Model;
 import java.awt.Point;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Board {
@@ -751,8 +750,8 @@ public class Board {
             }
 
             if (destination.state != FREE) {
-                System.out.print("Destination state is");
-                System.out.println(destination.state);
+             //   System.out.print("Destination state is");
+             //   System.out.println(destination.state);
                 Exception e = new Exception("Destination cell is occupied by another checker");
                 throw e;
             }
@@ -847,7 +846,7 @@ public class Board {
             }
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
+          //  System.out.println(e.getMessage());
         }
 
         return false;
@@ -1016,7 +1015,7 @@ public class Board {
                         return;
                     }
                     else {
-                        cutEnemies(board[source.row+2][source.column + 2],destination);
+                        cutEnemies(board[source.row + 2][source.column + 2],destination);
                     }
                 }
 
@@ -1123,6 +1122,10 @@ public class Board {
         else move = white;
     }
 
+    public boolean getMove(){
+        return move;
+    }
+
     public void setWhiteCounter(int number){
         white_counter = number;
     }
@@ -1161,6 +1164,29 @@ public class Board {
         }
     }
 
+
+    public Board getPreviousTurn(int index){
+        try {
+            if (this.matchHistory.isEmpty()) {
+                Exception e = new Exception("Empty match history");
+                throw e;
+            }
+            else {
+                Board brd = new Board();
+                brd.startingPosition();
+                for (int i = 0; i < index; i++) {
+                    brd.doMove(brd.board[matchHistory.get(i).getSource().x][matchHistory.get(i).getSource().y],brd.board[matchHistory.get(i).getDestination().x][matchHistory.get(i).getDestination().y]);
+                }
+
+                return brd;
+            }
+        }
+
+        catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 
 
 
