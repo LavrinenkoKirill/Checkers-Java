@@ -506,6 +506,7 @@ public class Board {
         int enemy = -1;
         if (move == WHITE) enemy = BLACK_PLAYER;
         else if (move == BLACK) enemy = WHITE_PLAYER;
+        System.out.println("+++");
 
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6 && source.row != 0 && source.row !=1 && source.row != 6 && source.row != 7) {
                 if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE && side != 1) {
@@ -792,16 +793,13 @@ public class Board {
                             else return false;
                         }
                     }
-
-                     if (destination.row - source.row > 1 || source.row - destination.row > 1 ){
-                        if (checkEnemies(source,destination,0)>=0){
+                        if (checkQueenEnemies(source,destination,-1,0) == true){
                             return true;
                         }
                         else {
                             Exception e = new Exception("Out of range of this checker");
                             throw e;
                         }
-                    }
                 }
 
                 if (source.queen == true) {
@@ -836,15 +834,15 @@ public class Board {
                             else return false;
                         }
                     }
-                    else if (destination.row - source.row > 1){
-                        if (checkEnemies(source,destination,0) >= 0){
-                            return true;
-                        }
-                        else {
-                            Exception e = new Exception("Out of range of this checker");
-                            throw e;
-                        }
+
+                    if (checkQueenEnemies(source,destination,-1,0) == true){
+                        return true;
                     }
+                    else {
+                        Exception e = new Exception("Out of range of this checker");
+                        throw e;
+                    }
+
 
 
                 }
@@ -856,7 +854,7 @@ public class Board {
             }
         }
         catch(Exception e){
-          // System.out.println(e.getMessage());
+       //    System.out.println(e.getMessage());
         }
 
         return false;
@@ -893,7 +891,7 @@ public class Board {
                     if ((destination.row - source.row == 1 || source.row - destination.row == 1) && (destination.column - source.column == 1 || source.column - destination.column == 1)) {
                     }
                     else {
-                        cutEnemies(source, destination);
+                        cutQueenEnemies(source, destination);
                     }
                     source.state = FREE;
 
@@ -1088,11 +1086,10 @@ public class Board {
             System.out.println("GAME OVER. WHITE PLAYER WINS");
             return W_WIN;
         }
-        else if (move == WHITE && canMove() == false) return B_WIN;
-        else if (move == BLACK && canMove() == false) return W_WIN;
-        else{
-            return CONTINUE;
-        }
+       // else if (move == WHITE) return B_WIN;
+       // else if (move == BLACK) return W_WIN;
+        else return CONTINUE;
+
     }
 
 
