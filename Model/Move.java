@@ -3,16 +3,9 @@ import java.awt.Point;
 
 public class Move {
 
-    public static final double WEIGHT_INVALID = Double.NEGATIVE_INFINITY;
+    private  Point source = new Point(-1,-1);
+    private  Point destination = new Point(-1,-1);
 
-
-    private Point source = new Point(-1,-1);
-    private Point destination = new Point(-1,-1);
-    private double weight;
-
-    public Move(){
-
-    }
 
     public Move(Point src,Point dest){
         source.x = src.x;
@@ -37,15 +30,4 @@ public class Move {
     public int getDestinationY(){return destination.y;}
 
 
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public void changeWeight(double number) {
-        this.weight += number;
-    }
 }

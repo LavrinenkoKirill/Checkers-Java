@@ -1,6 +1,5 @@
 package IO;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
@@ -16,7 +15,7 @@ public class BoardReader extends FileReader {
         try {
             int row = 0;
             int column = 0;
-            String str = new String();
+            String str;
             Scanner scan = new Scanner(this);
             Board board = new Board();
             while (scan.hasNextLine()) {
@@ -26,26 +25,16 @@ public class BoardReader extends FileReader {
                     column = 0;
                 }
                 if (str.lastIndexOf("white") != -1) {
-                    if (str.lastIndexOf("0") != -1) {
-                        board.setCell(row, column, 2, false);
-                    }
-                    else {
-                        board.setCell(row, column, 2, true);
-                    }
+                    board.setCell(row, column, 2, str.lastIndexOf("0") == -1);
                 }
                 else if (str.lastIndexOf("black") != -1) {
-                    if (str.lastIndexOf("0") != -1) {
-                        board.setCell(row, column, 1, false);
-                    } else {
-                        board.setCell(row, column, 1, true);
-                    }
+                    board.setCell(row, column, 1, str.lastIndexOf("0") == -1);
                 }
                 else if (str.lastIndexOf("free") != -1) {
                     board.setCell(row, column, 0, false);
                 }
                 else {
-                    Exception e = new Exception("Incorrect file");
-                    throw e;
+                    throw new Exception("Incorrect file");
                 }
                 if (row == 7 && column == 7) break;
                 column++;
@@ -58,22 +47,19 @@ public class BoardReader extends FileReader {
                 board.setMove(true);
             }
             else {
-                Exception e = new Exception("Incorrect file");
-                throw e;
+                throw new Exception("Incorrect file");
             }
             if (scan.hasNextInt()){
                 board.setWhiteCounter(scan.nextInt());
             }
             else {
-                Exception e = new Exception("Incorrect file");
-                throw e;
+                throw new Exception("Incorrect file");
             }
             if (scan.hasNextInt()){
                 board.setBlackCounter(scan.nextInt());
             }
             else {
-                Exception e = new Exception("Incorrect file");
-                throw e;
+                throw new Exception("Incorrect file");
             }
             scan.skip("\n");
             if (scan.hasNextLine()){
@@ -92,7 +78,7 @@ public class BoardReader extends FileReader {
                         if (scan.hasNextInt()) destination.y = scan.nextInt();
                         else flag = false;
 
-                        if (flag == true){
+                        if (flag){
                             System.out.println(source.x);
                             System.out.println(source.y);
 
@@ -102,21 +88,19 @@ public class BoardReader extends FileReader {
                             board.addMove(mv);
                         }
                         else {
-                            Exception e = new Exception("Ne chitaet");
-                            throw e;
+                            throw new Exception("Wrong file");
                         }
                     }
                 }
                 else {
-                    Exception e = new Exception("OH my God");
-                    throw e;
+                    throw new Exception("Wrong file");
                 }
             }
 
             return board;
         }
         catch(Exception e){
-            e.getMessage();
+            System.out.println("error: " + e.getMessage());
             return null;
         }
     }

@@ -86,7 +86,7 @@ public class GameView extends JFrame {
                             boolean turn = false;
                             for(int i = 0; i < BoardView.board.HistorySize(); i++){
                                 createMoveButton(BoardView.board.getHistoryMove(i).getSourceX(),BoardView.board.getHistoryMove(i).getSourceY(),BoardView.board.getHistoryMove(i).getDestinationX(),BoardView.board.getHistoryMove(i).getDestinationY(),turn);
-                                if (turn == false) turn = true;
+                                if (!turn) turn = true;
                                 else turn = false;
                             }
 
@@ -125,8 +125,8 @@ public class GameView extends JFrame {
     }
 
     public void createMoveButton(int sourceRow,int sourceColumn,int destRow,int destColumn,boolean turn){
-        String str = new String("");
-        if (turn == true){
+        String str = "";
+        if (turn){
             str += "Black move: ";
         }
         else str+= "White move: ";

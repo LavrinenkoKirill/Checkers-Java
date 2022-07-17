@@ -1,7 +1,6 @@
 package IO;
 import java.io.*;
 import Model.*;
-import java.awt.Point;
 
 public class BoardWriter extends FileWriter {
     public BoardWriter(File file) throws IOException {
@@ -31,7 +30,7 @@ public class BoardWriter extends FileWriter {
         write(String.valueOf(bc));
         write('\n');
 
-        if (board.isHistoryEmpty() == false) {
+        if (!board.isHistoryEmpty()) {
             write("Match History");
             write('\n');
             for (int i = 0; i < board.HistorySize(); i++){

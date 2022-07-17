@@ -15,28 +15,19 @@ public class Cell {
     }
 
     public boolean isFREE(){
-        if (this.state == Board.FREE) return true;
-        else return false;
+        return this.state == Board.FREE;
     }
 
     public boolean isBLACK(){
-        if (this.state == Board.BLACK_PLAYER) return true;
-        else return false;
+        return this.state == Board.BLACK_PLAYER;
     }
 
     public boolean isWHITE(){
-        if (this.state == Board.WHITE_PLAYER) return true;
-        else return false;
-    }
-
-    public void Str(){
-        System.out.println(row);
-        System.out.println(column);
+        return this.state == Board.WHITE_PLAYER;
     }
 
     public boolean isQUEEN(){
-        if (this.queen == true) return true;
-        else return false;
+        return this.queen;
     }
 
     public static boolean isValidCell(Point testPoint) {
@@ -50,9 +41,6 @@ public class Cell {
             return false;
         }
 
-        if (x % 2 == y % 2) {
-            return false;
-        }
-        return true;
+        return x % 2 != y % 2;
     }
 }

@@ -1,10 +1,8 @@
 package Tests;
 import IO.BoardReader;
 import Model.*;
-import View.BoardView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,17 +17,16 @@ class BoardTest {
         int black_checkers = 0;
         for (int i = 0; i < board.getBoardSize();i++){
             for (int j = 0; j < board.getBoardSize(); j++){
-                if (board.getCell(i,j).isWHITE() && board.getCell(i,j).isQUEEN() == false){
+                if (board.getCell(i,j).isWHITE() && !board.getCell(i,j).isQUEEN()){
                     white_checkers++;
                 }
-                else if (board.getCell(i,j).isBLACK() && board.getCell(i,j).isQUEEN() == false){
+                else if (board.getCell(i,j).isBLACK() && !board.getCell(i,j).isQUEEN()){
                     black_checkers++;
                 }
             }
         }
-        boolean flag = false;
-        if (white_checkers == 12 && black_checkers == 12) flag = true;
-        assertEquals(true,flag);
+        boolean flag = white_checkers == 12 && black_checkers == 12;
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test
@@ -38,7 +35,7 @@ class BoardTest {
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
         board.doMove(board.getCell(2,3), board.getCell(3,2));
-        assertEquals(true,board.checkEnemies(board.getCell(4,1),board.getCell(2,3),-1,0));
+        assertTrue(board.checkEnemies(board.getCell(4, 1), board.getCell(2, 3), -1));
     }
 
     @org.junit.jupiter.api.Test
@@ -52,13 +49,12 @@ class BoardTest {
     void doQueenMoveTest() {
         File save = new File("C:\\saves\\queen_test");
         try {
-            Board board = new Board();
+            Board board;
             BoardReader br = new BoardReader(save);
             board = br.load();
             board.doQueenMove(board.getCell(7,4),board.getCell(4,7));
-            boolean flag = false;
-            if (board.getCell(4,7).isBLACK() && board.getCell(4,7).isQUEEN()) flag = true;
-            assertEquals(true,flag);
+            boolean flag = board.getCell(4, 7).isBLACK() && board.getCell(4, 7).isQUEEN();
+            assertTrue(flag);
 
         }
         catch (IOException e){
@@ -70,10 +66,10 @@ class BoardTest {
     void checkQueenMoveTest() {
         File save = new File("C:\\saves\\queen_test");
         try {
-            Board board = new Board();
+            Board board;
             BoardReader br = new BoardReader(save);
             board = br.load();
-            assertEquals(true,board.checkQueenMove(board.getCell(7,4),board.getCell(4,7)));
+            assertTrue(board.checkQueenMove(board.getCell(7, 4), board.getCell(4, 7)));
 
         }
         catch (IOException e){
@@ -85,10 +81,10 @@ class BoardTest {
     void checkQueenEnemiesTest() {
         File save = new File("C:\\saves\\cut_queen_test");
         try {
-            Board board = new Board();
+            Board board;
             BoardReader br = new BoardReader(save);
             board = br.load();
-            assertEquals(true,board.checkEnemies(board.getCell(2,3),board.getCell(4,1),0,1));
+            assertTrue(board.checkEnemies(board.getCell(2, 3), board.getCell(4, 1), 0));
 
         }
         catch (IOException e){
@@ -100,16 +96,15 @@ class BoardTest {
     void cutQueenEnemiesTest() {
         File save = new File("C:\\saves\\cut_queen_test");
         try {
-            Board board = new Board();
+            Board board;
             BoardReader br = new BoardReader(save);
             board = br.load();
             int bc = board.getBlackCounter();
             board.doQueenMove(board.getCell(0,5),board.getCell(4,1));
-            boolean flag = false;
-            if (board.getCell(4,1).isWHITE() && board.getCell(4,1).isQUEEN()) flag = true;
+            boolean flag = board.getCell(4, 1).isWHITE() && board.getCell(4, 1).isQUEEN();
             if (bc - board.getBlackCounter() != 2) flag = false;
             System.out.println(board.getWhiteCounter());
-            assertEquals(true,flag);
+            assertTrue(flag);
 
         }
         catch (IOException e){
@@ -121,13 +116,12 @@ class BoardTest {
     void canMoveTest() {
         File save = new File("C:\\saves\\cant_move_test");
         try {
-            Board board = new Board();
+            Board board;
             BoardReader br = new BoardReader(save);
             board = br.load();
             board.doMove(board.getCell(2,3),board.getCell(0,5));
-            boolean flag = true;
-            if (!board.canMove()) flag = false;
-            assertEquals(false,flag);
+            boolean flag = board.canMove();
+            assertFalse(flag);
 
         }
         catch (IOException e){
@@ -139,7 +133,7 @@ class BoardTest {
     void isValidMoveTest() {
         Board board = new Board();
         board.startingPosition();
-        assertEquals(true,board.isValidMove(board.getCell(5,0),board.getCell(4,1)));
+        assertTrue(board.isValidMove(board.getCell(5, 0), board.getCell(4, 1)));
     }
 
     @org.junit.jupiter.api.Test
@@ -147,10 +141,9 @@ class BoardTest {
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
-        boolean flag = false;
-        if (board.getCell(4,1).isWHITE() && !board.getCell(4,1).isQUEEN()) flag = true;
+        boolean flag = board.getCell(4, 1).isWHITE() && !board.getCell(4, 1).isQUEEN();
         if (board.getCell(5,0).isWHITE() || board.getCell(5,0).isQUEEN()) flag = false;
-        assertEquals(true,flag);
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test
@@ -162,9 +155,8 @@ class BoardTest {
         board.doMove(board.getCell(2,3), board.getCell(3,2));
         int bc = board.getBlackCounter();
         board.cutEnemies(board.getCell(4,1),board.getCell(2,3));
-        boolean flag = false;
-        if (bc - board.getBlackCounter() == 1) flag = true;
-        assertEquals(true,flag);
+        boolean flag = bc - board.getBlackCounter() == 1;
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test
@@ -187,29 +179,25 @@ class BoardTest {
     void getCellTest() {
         Board board = new Board();
         board.startingPosition();
-        boolean flag = false;
-        if (board.getCell(7,0).isWHITE() && board.getCell(7,0).isQUEEN() == false) flag = true;
-        assertEquals(true,flag);
+        boolean flag = board.getCell(7, 0).isWHITE() && !board.getCell(7, 0).isQUEEN();
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test
     void isWhiteMoveTest() {
         Board board = new Board();
         board.startingPosition();
-        assertEquals(true,board.isWhiteMove());
+        assertTrue(board.isWhiteMove());
     }
 
     @org.junit.jupiter.api.Test
     void getBoardTest() {
         Board board1 = new Board();
         board1.startingPosition();
-        Board board2 = new Board();
+        Board board2;
         board2 = board1.getBoard();
-        boolean flag = false;
-        if (board1 == board2){
-            flag = true;
-        }
-        assertEquals(true,flag);
+        boolean flag = board1 == board2;
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test
@@ -217,9 +205,8 @@ class BoardTest {
         Board board = new Board();
         board.startingPosition();
         board.setCell(0,1,1,true);
-        boolean flag = false;
-        if (board.getCell(0,1).isBLACK() && board.getCell(0,1).isQUEEN()) flag = true;
-        assertEquals(true,flag);
+        boolean flag = board.getCell(0, 1).isBLACK() && board.getCell(0, 1).isQUEEN();
+        assertTrue(flag);
     }
 
     @org.junit.jupiter.api.Test

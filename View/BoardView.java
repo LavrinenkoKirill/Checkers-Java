@@ -75,7 +75,7 @@ public class BoardView extends JButton {
                 }
 
                 // Black king
-                if (board.getCell(j, i).isBLACK() == true && board.getCell(j, i).isQUEEN()) {
+                if (board.getCell(j, i).isBLACK() && board.getCell(j, i).isQUEEN()) {
                     g.setColor(Color.DARK_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
                     g.setColor(Color.LIGHT_GRAY);
@@ -89,7 +89,7 @@ public class BoardView extends JButton {
                 }
 
                 // White checker
-                if (board.getCell(j, i).isWHITE() == true) {
+                if (board.getCell(j, i).isWHITE()) {
                     g.setColor(Color.LIGHT_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
                     g.setColor(Color.DARK_GRAY);
@@ -101,7 +101,7 @@ public class BoardView extends JButton {
                 }
 
                 // White king
-                if (board.getCell(j, i).isWHITE() == true && board.getCell(j, i).isQUEEN()) {
+                if (board.getCell(j, i).isWHITE() && board.getCell(j, i).isQUEEN()) {
                     g.setColor(Color.LIGHT_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
                     g.setColor(Color.DARK_GRAY);
@@ -127,6 +127,7 @@ public class BoardView extends JButton {
             g.drawString(player, W / 2 - width / 2, OFFSET_Y + 8 * BOX_SIZE + 2 + 11);
 
 
+
             if (board.isWin() != Board.CONTINUE) {
                 g.setFont(new Font("Arial", Font.BOLD, 20));
                 if (board.isWin() == Board.W_WIN) player = "Game Over! WHITE VICTORY";
@@ -139,8 +140,9 @@ public class BoardView extends JButton {
             }
 
 
-            if (Cell.isValidCell(selected) == true) {
-                if ((board.isWhiteMove() == true && board.getCell(this.selected.y,this.selected.x).isWHITE()) || (board.isWhiteMove() == false && board.getCell(this.selected.y,this.selected.x).isBLACK())) {
+
+            if (Cell.isValidCell(selected)) {
+                if ((board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isWHITE()) || (!board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isBLACK())) {
                     g.setColor(Color.GREEN);
                     g.fillRect(OFFSET_X + selected.x * BOX_SIZE, OFFSET_Y + selected.y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
                 }
@@ -187,8 +189,7 @@ public class BoardView extends JButton {
             }
             else {
                 boolean side;
-                if (board.isWhiteMove()) side = false;
-                else side = true;
+                side = !board.isWhiteMove();
                 if (board.isValidMove(board.getCell(this.selected.y, this.selected.x), board.getCell(y, x))){
                     view.createMoveButton(this.selected.y,this.selected.x,y,x,side);
                 }
