@@ -1,6 +1,5 @@
 package View;
 import Model.*;
-import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JButton;
@@ -11,8 +10,6 @@ public class BoardView extends JButton {
     protected static Board board;
     private static final int PADDING = 16;
     private Point selected;
-    private boolean soloMode;
-    private CheckersAI computer;
     private GameView view;
 
 
@@ -20,7 +17,6 @@ public class BoardView extends JButton {
         board = b;
         board.startingPosition();
         selected = new Point(-1,-1);
-        soloMode = false;
         repaint();
         view = vw;
         this.addActionListener(new MouseListener());
@@ -29,16 +25,10 @@ public class BoardView extends JButton {
     public BoardView(Board b,boolean side,GameView vw){
         board = b;
         board.startingPosition();
-        computer = new CheckersAI(side,board);
         selected = new Point(-1,-1);
-        soloMode = true;
+        view = vw;
         repaint();
         this.addActionListener(new MouseListener());
-        if (side == false) {
-            computer.generateAvailableMoves(board);
-            computer.chooseMove(board);
-            repaint();
-        }
     }
 
     public void paint(Graphics g){
@@ -133,6 +123,7 @@ public class BoardView extends JButton {
             }
             String player = board.isWhiteMove()? "WHITE TURN" : "BLACK TURN";
             int width = g.getFontMetrics().stringWidth(player);
+            g.setColor(Color.BLACK);
             g.drawString(player, W / 2 - width / 2, OFFSET_Y + 8 * BOX_SIZE + 2 + 11);
 
 
@@ -146,6 +137,7 @@ public class BoardView extends JButton {
                 g.setColor(Color.RED);
                 g.drawString(player, W / 2 - width / 2, OFFSET_Y + BOX_SIZE * 4 + 7);
             }
+
 
             if (Cell.isValidCell(selected) == true) {
                 if ((board.isWhiteMove() == true && board.getCell(this.selected.y,this.selected.x).isWHITE()) || (board.isWhiteMove() == false && board.getCell(this.selected.y,this.selected.x).isBLACK())) {
@@ -170,7 +162,6 @@ public class BoardView extends JButton {
 
     private class MouseListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             // Get the new mouse coordinates and handle the click
             Point m = BoardView.this.getMousePosition();
             if (m != null) {

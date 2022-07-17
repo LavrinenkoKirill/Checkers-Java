@@ -118,6 +118,24 @@ class BoardTest {
     }
 
     @org.junit.jupiter.api.Test
+    void canMoveTest() {
+        File save = new File("C:\\saves\\cant_move_test");
+        try {
+            Board board = new Board();
+            BoardReader br = new BoardReader(save);
+            board = br.load();
+            board.doMove(board.getCell(2,3),board.getCell(0,5));
+            boolean flag = true;
+            if (!board.canMove()) flag = false;
+            assertEquals(false,flag);
+
+        }
+        catch (IOException e){
+            System.out.println("Wrong path");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
     void isValidMoveTest() {
         Board board = new Board();
         board.startingPosition();

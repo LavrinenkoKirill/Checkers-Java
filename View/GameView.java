@@ -1,8 +1,6 @@
 package View;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -10,10 +8,10 @@ import Model.*;
 import IO.*;
 
 public class GameView extends JFrame {
-    public static final int DEFAULT_WIDTH = 500;
-    public static final int DEFAULT_HEIGHT = 600;
+    private static final int DEFAULT_WIDTH = 500;
+    private static final int DEFAULT_HEIGHT = 600;
     private int movesIndex = 0;
-    public static JMenu matchHistory = new JMenu("Match History");
+    private static JMenu matchHistory = new JMenu("Match History");
     private LinkedList<HistoryButton> buttons = new LinkedList<>();
     public GameView(){
         super("CHECKERS");
@@ -83,7 +81,6 @@ public class GameView extends JFrame {
                         BoardReader br = new BoardReader(fileChooser.getSelectedFile());
                         Board b = br.load();
                         if (b != null) {
-                            System.out.println("+");
                             matchHistory.removeAll();
                             BoardView.board = b;
                             boolean turn = false;
@@ -109,8 +106,8 @@ public class GameView extends JFrame {
         });
         menuBar.add(fileMenu);
         JButton turn = new JButton("Previous turn");
-        turn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        turn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
                 Board b = BoardView.board.getPreviousTurn();
                 if (b!=null){
                     refreshMatchHistory(buttons.size() - 1);

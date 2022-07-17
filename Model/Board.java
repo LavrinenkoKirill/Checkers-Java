@@ -3,35 +3,35 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 public class Board {
-    private final int board_size = 8;
+    private final int BOARD_SIZE = 8;
     private int white_counter = 12;
     private int black_counter = 12;
-    private final boolean black = true;
-    private final boolean white = false;
+    public static final boolean BLACK = true;
+    public static final boolean WHITE = false;
     public static final int FREE = 0;
     public static final int BLACK_PLAYER = 1;
     public static final int WHITE_PLAYER = 2;
-    protected Cell[][] board = new Cell[board_size][board_size];
+    protected Cell[][] board = new Cell[BOARD_SIZE][BOARD_SIZE];
     protected LinkedList<Move> matchHistory;
-    protected boolean  move = white;
+    protected boolean  move = WHITE;
     public static final int W_WIN = 1;
     public static final int B_WIN = 2;
     public static final int CONTINUE = 3;
 
     public Board() {
-        for (int i = 0; i < board_size; i++) {
-            for (int j = 0; j < board_size; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
                 board[i][j] = new Cell();
                 board[i][j].row = i;
                 board[i][j].column = j;
                 if (i % 2 == 0 && j % 2 == 1) {
-                    board[i][j].colour = black;
+                    board[i][j].colour = BLACK;
                 }
                 else if (i % 2 == 1 && j % 2 == 0){
-                    board[i][j].colour = black;
+                    board[i][j].colour = BLACK;
                 }
                 else {
-                    board[i][j].colour = white;
+                    board[i][j].colour = WHITE;
                 }
             }
         }
@@ -39,10 +39,20 @@ public class Board {
         matchHistory = new LinkedList<Move>();
     }
 
+    public Board clone(){
+        Board brd  = new Board();
+        for (int i = 0; i < matchHistory.size(); i++){
+            brd.doMove(brd.board[matchHistory.get(i).getSource().x][matchHistory.get(i).getSource().y],brd.board[matchHistory.get(i).getDestination().x][matchHistory.get(i).getDestination().y]);
+        }
+
+        return brd;
+    }
+
+
     public void startingPosition() {
-        for (int i = 0; i < board_size; i++) {
-            for (int j = 0; j < board_size; j++) {
-                if (i != 3 && i != 4 && board[i][j].colour == black) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (i != 3 && i != 4 && board[i][j].colour == BLACK) {
                     if (i < 3) {
                         board[i][j].state = BLACK_PLAYER;
                     } else {
@@ -55,7 +65,7 @@ public class Board {
 
     public int checkEnemies(Cell source,Cell destination, int counter){
         int flag = -1;
-        if (move == white) {
+        if (move == WHITE) {
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6) {
                 if (board[source.row - 1][source.column - 1].state == BLACK_PLAYER && board[source.row - 2][source.column - 2].state == FREE) {
                     if (checkDistance(board[source.row - 2][source.column - 2],board[source.row - 2][source.column - 2],destination) >= 0){
@@ -112,7 +122,7 @@ public class Board {
                 }
             }
         }
-        if (move == black) {
+        if (move == BLACK) {
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6) {
                 if (board[source.row + 1][source.column - 1].state == WHITE_PLAYER && board[source.row + 2][source.column - 2].state == FREE) {
                     if (checkDistance(board[source.row + 2][source.column - 2],board[source.row + 2][source.column - 2],destination) >= 0){
@@ -186,24 +196,24 @@ public class Board {
     public void doQueenMove(Cell source,Cell destination){
         int enemy = -1;
         int player = -1;
-        if (move == white)
+        if (move == WHITE)
         {
             player = WHITE_PLAYER;
             enemy = BLACK_PLAYER;
         }
-        else if (move == black) {
+        else if (move == BLACK) {
             player = BLACK_PLAYER;
             enemy = WHITE_PLAYER;
         }
 
         int i = source.row;
         for (int j = source.column; j >= 0; j--) {
-            if (i >= board_size) break;
+            if (i >= BOARD_SIZE) break;
             if (board[i][j].state == enemy && j != 0 && i != 7) {
                 if (board[i + 1][j - 1].state == FREE) {
                     if (checkDistance(board[i + 1][j - 1], board[i + 1][j - 1], destination) >= 0) {
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         board[i + 1][j - 1].state = player;
                         board[i + 1][j - 1].queen = true;
                         source.queen = false;
@@ -212,8 +222,8 @@ public class Board {
                     }
                     else {
                         if (checkQueenEnemies(board[i + 1][j - 1], destination, 0,0) == true){
-                            if (move == white) black_counter--;
-                            else if (move == black) white_counter--;
+                            if (move == WHITE) black_counter--;
+                            else if (move == BLACK) white_counter--;
                             source.queen = false;
                             source.state = FREE;
                             board[i][j].state = FREE;
@@ -231,13 +241,13 @@ public class Board {
 
         }
         i = source.row;
-        for (int j = source.column; j < board_size; j++) {
-            if (i >= board_size) break;
+        for (int j = source.column; j < BOARD_SIZE; j++) {
+            if (i >= BOARD_SIZE) break;
             if (board[i][j].state == enemy && i != 7 && j != 7) {
                 if (board[i + 1][j + 1].state == FREE){
                     if (checkDistance(board[i + 1][j + 1],board[i + 1][j + 1],destination) >= 0) {
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         board[i + 1][j + 1].state = player;
                         board[i + 1][j + 1].queen = true;
                         source.state = FREE;
@@ -245,8 +255,8 @@ public class Board {
                         board[i][j].state = FREE;
                     }
                     else if (checkQueenEnemies(board[i + 1][j + 1],destination,1,0) == true) {
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         source.state = FREE;
                         source.queen = false;
                         board[i][j].state = FREE;
@@ -270,16 +280,16 @@ public class Board {
             if (board[i][j].state == enemy && i != 0 && j!=0){
                 if (board[i - 1][j - 1].state == FREE) {
                     if (checkDistance(board[i - 1][j - 1],board[i - 1][j - 1],destination)>= 0) {
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         board[i - 1][j - 1].state = player;
                         board[i - 1][j - 1].queen = true;
                         source.queen = false;
                         board[i][j].state = FREE;
                     }
                     else if (checkQueenEnemies(board[i - 1][j - 1],destination,2,0) == true){
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         source.queen = false;
                         board[i][j].state = FREE;
                         cutQueenEnemies(board[i - 1][j - 1],destination);
@@ -295,13 +305,13 @@ public class Board {
         }
 
         i = source.row;
-        for (int j = source.column;j < board_size;j++){
+        for (int j = source.column;j < BOARD_SIZE;j++){
             if (i <= 0) break;
             if (board[i][j].state == enemy && j != 7 && i != 0){
                 if (board[i - 1][j + 1].state == FREE) {
                     if (checkDistance(board[i - 1][j + 1], board[i - 1][j + 1], destination) >= 0){
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         board[i - 1][j + 1].state = player;
                         source.queen = false;
                         board[i - 1][j + 1].queen = true;
@@ -309,8 +319,8 @@ public class Board {
 
                     }
                     else if (checkQueenEnemies(board[i - 1][j + 1],destination,3,0) == true){
-                        if (move == white) black_counter--;
-                        else if (move == black) white_counter--;
+                        if (move == WHITE) black_counter--;
+                        else if (move == BLACK) white_counter--;
                         source.queen = false;
                         board[i][j].state = FREE;
                         cutQueenEnemies(board[i - 1][j + 1],destination);
@@ -330,17 +340,17 @@ public class Board {
         Point friend = new Point(-1,-1);
         int enemy = -1;
         int player = -1;
-        if (move == white) {
+        if (move == WHITE) {
             player = WHITE_PLAYER;
             enemy = BLACK_PLAYER;
         }
-        else if (move == black) {
+        else if (move == BLACK) {
             player = BLACK_PLAYER;
             enemy = WHITE_PLAYER;
         }
             int i = source.row;
             for (int j = source.column; j >= 0; j--) {
-                if (i >= board_size) break;
+                if (i >= BOARD_SIZE) break;
                 if (board[i][j].state == enemy && j != 0 && i != 7) {
                     if (board[i + 1][j - 1].state == FREE) {
                         if (checkDistance(board[i + 1][j - 1], board[i + 1][j - 1], destination) >= 0) {
@@ -379,8 +389,8 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
-            for (int j = source.column; j < board_size; j++) {
-                if (i >= board_size) break;
+            for (int j = source.column; j < BOARD_SIZE; j++) {
+                if (i >= BOARD_SIZE) break;
                 if (board[i][j].state == enemy && i != 7 && j != 7) {
                     if (board[i + 1][j + 1].state == FREE){
                         if (checkDistance(board[i + 1][j + 1],board[i + 1][j + 1],destination) >= 0) {
@@ -455,7 +465,7 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
-            for (int j = source.column;j < board_size;j++){
+            for (int j = source.column;j < BOARD_SIZE;j++){
                 if (i < 0) break;
                 if (board[i][j].state == enemy && j != 7 && i != 0){
                     if (board[i - 1][j + 1].state == FREE) {
@@ -494,8 +504,8 @@ public class Board {
 
     public boolean checkQueenEnemies(Cell source,Cell destination,int side, int counter){
         int enemy = -1;
-        if (move == white) enemy = BLACK_PLAYER;
-        else if (move == black) enemy = WHITE_PLAYER;
+        if (move == WHITE) enemy = BLACK_PLAYER;
+        else if (move == BLACK) enemy = WHITE_PLAYER;
 
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6 && source.row != 0 && source.row !=1 && source.row != 6 && source.row != 7) {
                 if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE && side != 1) {
@@ -618,12 +628,12 @@ public class Board {
     public void cutQueenEnemies(Cell source,Cell destination){
         int enemy = -1;
         int player = -1;
-        if (move == white)
+        if (move == WHITE)
         {
             enemy = BLACK_PLAYER;
             player = WHITE_PLAYER;
         }
-        else if (move == black) {
+        else if (move == BLACK) {
             enemy = WHITE_PLAYER;
             player = BLACK_PLAYER;
         }
@@ -631,8 +641,8 @@ public class Board {
         if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6 && source.row != 0 && source.row !=1 && source.row != 6 && source.row != 7) {
             if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE) {
                 board[source.row - 1][source.column - 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row - 2][source.column - 2],board[source.row - 2][source.column - 2],destination) >= 0){
                     return;
                 }
@@ -642,8 +652,8 @@ public class Board {
             }
             else if (board[source.row - 1][source.column + 1].state == enemy && board[source.row - 2][source.column + 2].state == FREE) {
                 board[source.row - 1][source.column + 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row - 2][source.column + 2],board[source.row - 2][source.column + 2],destination) >= 0){
                     return;
                 }
@@ -654,8 +664,8 @@ public class Board {
 
             else if (board[source.row + 1][source.column + 1].state == enemy && board[source.row + 2][source.column + 2].state == FREE){
                 board[source.row + 1][source.column + 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row + 2][source.column + 2],board[source.row + 2][source.column + 2],destination) >= 0){
                     return;
                 }
@@ -666,8 +676,8 @@ public class Board {
 
             else if (board[source.row + 1][source.column - 1].state == enemy && board[source.row + 2][source.column - 2].state == FREE){
                 board[source.row + 1][source.column - 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row + 2][source.column - 2],board[source.row + 2][source.column - 2],destination) >= 0){
                     return;
                 }
@@ -681,8 +691,8 @@ public class Board {
         else if (source.row == 0 || source.row == 1) {
             if (board[source.row + 1][source.column - 1].state == enemy && board[source.row + 2][source.column - 2].state == FREE){
                 board[source.row + 1][source.column - 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row + 2][source.column - 2],board[source.row + 2][source.column - 2],destination) >= 0){
                     return;
                 }
@@ -693,8 +703,8 @@ public class Board {
 
             else if (board[source.row + 1][source.column + 1].state == enemy && board[source.row + 2][source.column + 2].state == FREE){
                 board[source.row + 1][source.column + 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row + 2][source.column + 2],board[source.row + 2][source.column + 2],destination) >= 0){
                     return;
                 }
@@ -710,8 +720,8 @@ public class Board {
 
             if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE) {
                 board[source.row - 1][source.column - 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row - 2][source.column - 2],board[source.row - 2][source.column - 2],destination) >= 0){
                     return;
                 }
@@ -722,8 +732,8 @@ public class Board {
 
             else if (board[source.row - 1][source.column + 1].state == enemy && board[source.row - 2][source.column + 2].state == FREE) {
                 board[source.row - 1][source.column + 1].state = FREE;
-                if (move == white) black_counter--;
-                else if (move == black) white_counter--;
+                if (move == WHITE) black_counter--;
+                else if (move == BLACK) white_counter--;
                 if (checkDistance(board[source.row - 2][source.column + 2],board[source.row - 2][source.column + 2],destination) >= 0){
                     return;
                 }
@@ -744,7 +754,7 @@ public class Board {
 
     public boolean isValidMove(Cell source,Cell destination){
         try {
-            if (destination.colour == white) {
+            if (destination.colour == WHITE) {
                 Exception e = new Exception("Checkers can’t be moved to white cells");
                 throw e;
             }
@@ -756,7 +766,7 @@ public class Board {
                 throw e;
             }
 
-            if (move == white) {
+            if (move == WHITE) {
                 if (source.state == BLACK_PLAYER) {
                     Exception e = new Exception("Can not move opponents checkers");
                     throw e;
@@ -801,7 +811,7 @@ public class Board {
 
             }
 
-            if (move == black) {
+            if (move == BLACK) {
                 if (source.state == WHITE_PLAYER) {
                     Exception e = new Exception("Can not move opponents checkers");
                     throw e;
@@ -846,7 +856,7 @@ public class Board {
             }
         }
         catch(Exception e){
-          //  System.out.println(e.getMessage());
+          // System.out.println(e.getMessage());
         }
 
         return false;
@@ -887,19 +897,19 @@ public class Board {
                     }
                     source.state = FREE;
 
-                    if (move == white) {
+                    if (move == WHITE) {
                         destination.state = WHITE_PLAYER;
                         if (destination.row == 0) {
                             destination.queen = true;
                         }
-                        move = black;
+                        move = BLACK;
 
-                    } else if (move == black) {
+                    } else if (move == BLACK) {
                         destination.state = BLACK_PLAYER;
                         if (destination.row == 7) {
                             destination.queen = true;
                         }
-                        move = white;
+                        move = WHITE;
                     }
                 }
                 else {
@@ -907,13 +917,13 @@ public class Board {
                     source.state = FREE;
                     source.queen = false;
                     destination.queen = true;
-                    if (move == white) {
+                    if (move == WHITE) {
                         destination.state = WHITE_PLAYER;
-                        move = black;
+                        move = BLACK;
                     }
-                    else if (move == black){
+                    else if (move == BLACK){
                         destination.state = BLACK_PLAYER;
-                        move = white;
+                        move = WHITE;
                     }
 
 
@@ -922,13 +932,13 @@ public class Board {
 
             }
             else {
-                System.out.println("Incorrect move. Try again");
+                //  System.out.println("Incorrect move. Try again");
             }
         }
     }
 
     public void cutEnemies(Cell source, Cell destination){
-        if (move == white) {
+        if (move == WHITE) {
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6) {
                 if (board[source.row - 1][source.column - 1].state == BLACK_PLAYER && board[source.row - 2][source.column - 2].state == FREE) {
                     black_counter--;
@@ -981,7 +991,7 @@ public class Board {
 
             }
         }
-        if (move == black) {
+        if (move == BLACK) {
             if (source.column != 0 && source.column != 7 && source.column != 1 && source.column != 6) {
                 if (board[source.row + 1][source.column - 1].state == WHITE_PLAYER && board[source.row + 2][source.column - 2].state == FREE) {
                     white_counter--;
@@ -1038,6 +1048,36 @@ public class Board {
 
     }
 
+    public boolean canMove(){
+        if (move == WHITE) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (board[i][j].state == WHITE_PLAYER) {
+                        for (int x = 0; x < BOARD_SIZE; x++) {
+                            for (int y = 0; y < BOARD_SIZE; y++) {
+                                if (isValidMove(board[i][j], board[x][y])) return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (move == BLACK){
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (board[i][j].state == BLACK_PLAYER) {
+                        for (int x = 0; x < BOARD_SIZE; x++) {
+                            for (int y = 0; y < BOARD_SIZE; y++) {
+                                if (isValidMove(board[i][j], board[x][y])) return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     public int isWin() {
         if (white_counter == 0) {
@@ -1048,32 +1088,16 @@ public class Board {
             System.out.println("GAME OVER. WHITE PLAYER WINS");
             return W_WIN;
         }
+        else if (move == WHITE && canMove() == false) return B_WIN;
+        else if (move == BLACK && canMove() == false) return W_WIN;
         else{
             return CONTINUE;
         }
     }
 
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < board_size; i++) {
-            for (int j = 0; j < board_size; j++) {
-                sb.append(board[i][j].row);
-                sb.append("-");
-                sb.append(board[i][j].column);
-                sb.append("-");
-                if (board[i][j].state == WHITE_PLAYER) sb.append("white ");
-                if (board[i][j].state == BLACK_PLAYER) sb.append("black ");
-                if (board[i][j].state == FREE) sb.append("free ");
-            }
-            sb.append("\n");
-        }
-        String s = sb.toString();
-        return s;
-    }
-
     public int getBoardSize(){
-        return board_size;
+        return BOARD_SIZE;
     }
 
     public Cell getCell(int row,int column){
@@ -1085,12 +1109,13 @@ public class Board {
         }
         catch(Exception e){
             e.getMessage();
+            return null;
         }
         return board[row][column];
     }
 
     public boolean isWhiteMove(){
-        if (move == white) return true;
+        if (move == WHITE) return true;
         else return false;
     }
 
@@ -1117,14 +1142,11 @@ public class Board {
 
     public void setMove(boolean mv){
         if (mv == true){
-            move = black;
+            move = BLACK;
         }
-        else move = white;
+        else move = WHITE;
     }
 
-    public boolean getMove(){
-        return move;
-    }
 
     public void setWhiteCounter(int number){
         white_counter = number;
