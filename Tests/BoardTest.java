@@ -38,7 +38,7 @@ class BoardTest {
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
         board.doMove(board.getCell(2,3), board.getCell(3,2));
-        assertEquals(1,board.checkEnemies(board.getCell(4,1),board.getCell(2,3),0));
+        assertEquals(true,board.checkEnemies(board.getCell(4,1),board.getCell(2,3),-1,0));
     }
 
     @org.junit.jupiter.api.Test
@@ -88,7 +88,7 @@ class BoardTest {
             Board board = new Board();
             BoardReader br = new BoardReader(save);
             board = br.load();
-            assertEquals(true,board.checkQueenEnemies(board.getCell(2,3),board.getCell(4,1),0,1));
+            assertEquals(true,board.checkEnemies(board.getCell(2,3),board.getCell(4,1),0,1));
 
         }
         catch (IOException e){
@@ -155,13 +155,15 @@ class BoardTest {
 
     @org.junit.jupiter.api.Test
     void cutEnemiesTest() {
+
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
         board.doMove(board.getCell(2,3), board.getCell(3,2));
+        int bc = board.getBlackCounter();
         board.cutEnemies(board.getCell(4,1),board.getCell(2,3));
         boolean flag = false;
-        if (board.getCell(2,3).isWHITE() && !board.getCell(2,3).isQUEEN()) flag = true;
+        if (bc - board.getBlackCounter() == 1) flag = true;
         assertEquals(true,flag);
     }
 
