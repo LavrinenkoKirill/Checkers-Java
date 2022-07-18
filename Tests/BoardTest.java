@@ -103,7 +103,6 @@ class BoardTest {
             board.doQueenMove(board.getCell(0,5),board.getCell(4,1));
             boolean flag = board.getCell(4, 1).isWHITE() && board.getCell(4, 1).isQUEEN();
             if (bc - board.getBlackCounter() != 2) flag = false;
-            System.out.println(board.getWhiteCounter());
             assertTrue(flag);
 
         }

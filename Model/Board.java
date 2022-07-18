@@ -376,7 +376,9 @@ public class Board {
 
     public boolean checkEnemies(Cell source,Cell destination,int side){
 
-        if (checkDistance(source,source,destination) >= 0) return true;
+        if (checkDistance(source,source,destination) >= 0) {
+            return true;
+        }
 
         int enemy = -1;
         if (move == WHITE) enemy = BLACK_PLAYER;
@@ -407,8 +409,6 @@ public class Board {
         }
 
         if (source.row < 6 && source.column < 6) {
-            System.out.println(source.row);
-            System.out.println(source.column);
             if (board[source.row + 1][source.column + 1].state == enemy && board[source.row + 2][source.column + 2].state == FREE && side != 2) {
                 if (checkDistance(board[source.row + 2][source.column + 2], board[source.row + 2][source.column + 2], destination) >= 0) {
                     return true;
@@ -451,7 +451,7 @@ public class Board {
 
         if (source.row > 1 && source.column > 1) {
             if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE) {
-                if (checkEnemies(board[source.row - 2][source.column - 2], destination, -1)) {
+                if (checkEnemies(board[source.row - 2][source.column - 2], destination, 2)) {
                     board[source.row - 1][source.column - 1].state = FREE;
                     board[source.row - 1][source.column - 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -470,7 +470,7 @@ public class Board {
 
         if (source.row > 1 && source.column < 6) {
             if (board[source.row - 1][source.column + 1].state == enemy && board[source.row - 2][source.column + 2].state == FREE) {
-                if (checkEnemies(board[source.row - 2][source.column + 2], destination, -1)) {
+                if (checkEnemies(board[source.row - 2][source.column + 2], destination, 3)) {
                     board[source.row - 1][source.column + 1].state = FREE;
                     board[source.row - 1][source.column + 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -488,7 +488,7 @@ public class Board {
 
         if (source.row < 6 && source.column < 6) {
             if (board[source.row + 1][source.column + 1].state == enemy && board[source.row + 2][source.column + 2].state == FREE) {
-                if (checkEnemies(board[source.row + 2][source.column + 2], destination, -1)) {
+                if (checkEnemies(board[source.row + 2][source.column + 2], destination, 1)) {
                     board[source.row + 1][source.column + 1].state = FREE;
                     board[source.row + 1][source.column + 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -507,7 +507,7 @@ public class Board {
 
         if (source.row < 6 && source.column > 1) {
             if (board[source.row + 1][source.column - 1].state == enemy && board[source.row + 2][source.column - 2].state == FREE) {
-                if (checkEnemies(board[source.row + 2][source.column - 2], destination, -1)) {
+                if (checkEnemies(board[source.row + 2][source.column - 2], destination, 0)) {
                     board[source.row + 1][source.column - 1].state = FREE;
                     board[source.row + 1][source.column - 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -596,7 +596,7 @@ public class Board {
             }
         }
         catch(Exception e){
-          System.out.println(e.getMessage());
+      //    System.out.println(e.getMessage());
         }
 
         return false;
@@ -612,6 +612,18 @@ public class Board {
 
     public int HistorySize(){
         return this.matchHistory.size();
+    }
+
+    public void showHistory(){
+        for (int i = 0; i < matchHistory.size(); i++){
+            System.out.print(matchHistory.get(i).getSourceX());
+            System.out.print(" ");
+            System.out.print(matchHistory.get(i).getSourceY());
+            System.out.print("-");
+            System.out.print(matchHistory.get(i).getDestinationX());
+            System.out.print(" ");
+            System.out.println(matchHistory.get(i).getDestinationY());
+        }
     }
 
     public Move getHistoryMove(int index){
@@ -712,7 +724,7 @@ public class Board {
             System.out.println("GAME OVER. WHITE PLAYER WINS");
             return W_WIN;
         }
-        else if (move == WHITE && !canMove()) return B_WIN;
+       else if (move == WHITE && !canMove()) return B_WIN;
         else if (move == BLACK && !canMove()) return W_WIN;
         else return CONTINUE;
 
@@ -798,6 +810,7 @@ public class Board {
         }
 
         catch(Exception e){
+            System.out.println("op");
             System.out.println("error: " + e.getMessage());
             return null;
         }
@@ -812,7 +825,7 @@ public class Board {
             else {
                 Board brd = new Board();
                 brd.startingPosition();
-                for (int i = 0; i < index; i++) {
+                for (int i = 0; i <= index; i++) {
                     brd.doMove(brd.board[matchHistory.get(i).getSource().x][matchHistory.get(i).getSource().y],brd.board[matchHistory.get(i).getDestination().x][matchHistory.get(i).getDestination().y]);
                 }
 
@@ -821,6 +834,7 @@ public class Board {
         }
 
         catch(Exception e){
+            System.out.println("hop");
             System.out.println("error: " + e.getMessage());
             return null;
         }

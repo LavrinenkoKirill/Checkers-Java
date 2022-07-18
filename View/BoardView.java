@@ -128,6 +128,7 @@ public class BoardView extends JButton {
 
 
 
+
             if (board.isWin() != Board.CONTINUE) {
                 g.setFont(new Font("Arial", Font.BOLD, 20));
                 if (board.isWin() == Board.W_WIN) player = "Game Over! WHITE VICTORY";
@@ -138,6 +139,7 @@ public class BoardView extends JButton {
                 g.setColor(Color.RED);
                 g.drawString(player, W / 2 - width / 2, OFFSET_Y + BOX_SIZE * 4 + 7);
             }
+
 
 
 

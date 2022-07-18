@@ -110,7 +110,7 @@ public class GameView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Board b = BoardView.board.getPreviousTurn();
                 if (b!=null){
-                    refreshMatchHistory(buttons.size() - 1);
+                    refreshMatchHistory(movesIndex - 2);
                     BoardView.board = b;
                     repaint();
                 }
@@ -160,11 +160,11 @@ public class GameView extends JFrame {
         for (int i = 0; i < buttons.size(); i++){
             if (buttons.get(i).getIndex() > lastIndex){
                 matchHistory.remove(buttons.get(i));
-                buttons.remove(i);
                 matchHistory.revalidate();
                 matchHistory.repaint();
             }
         }
+        movesIndex = lastIndex + 1;
     }
 
 
