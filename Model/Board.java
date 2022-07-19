@@ -614,18 +614,6 @@ public class Board {
         return this.matchHistory.size();
     }
 
-    public void showHistory(){
-        for (int i = 0; i < matchHistory.size(); i++){
-            System.out.print(matchHistory.get(i).getSourceX());
-            System.out.print(" ");
-            System.out.print(matchHistory.get(i).getSourceY());
-            System.out.print("-");
-            System.out.print(matchHistory.get(i).getDestinationX());
-            System.out.print(" ");
-            System.out.println(matchHistory.get(i).getDestinationY());
-        }
-    }
-
     public Move getHistoryMove(int index){
         return this.matchHistory.get(index);
     }
@@ -810,7 +798,6 @@ public class Board {
         }
 
         catch(Exception e){
-            System.out.println("op");
             System.out.println("error: " + e.getMessage());
             return null;
         }
@@ -834,7 +821,6 @@ public class Board {
         }
 
         catch(Exception e){
-            System.out.println("hop");
             System.out.println("error: " + e.getMessage());
             return null;
         }

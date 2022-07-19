@@ -2,6 +2,7 @@ package Tests;
 import IO.BoardReader;
 import Model.*;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -246,4 +247,94 @@ class BoardTest {
         board.startingPosition();
         assertEquals(12,board.getBlackCounter());
     }
+
+
+    @org.junit.jupiter.api.Test
+    void isHistoryEmptyTest() {
+        Board board = new Board();
+        board.startingPosition();
+        assertTrue(board.isHistoryEmpty());
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void addMoveTest() {
+        Board board = new Board();
+        board.startingPosition();
+        board.doMove(board.getCell(5,0),board.getCell(4,1));
+        Point src = new Point(5,0);
+        Point dest = new Point(4,1);
+        Move mv = new Move(src,dest);
+        board.addMove(mv);
+        assertFalse(board.isHistoryEmpty());
+    }
+
+    @org.junit.jupiter.api.Test
+    void HistorySizeTest() {
+        File save = new File("C:\\saves\\History_size_test");
+        try {
+            Board board;
+            BoardReader br = new BoardReader(save);
+            board = br.load();
+            assertEquals(14,board.HistorySize());
+        }
+        catch (IOException e){
+            System.out.println("Wrong path");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void getHistoryMoveTest() {
+        File save = new File("C:\\saves\\getHistoryMoveTest");
+        try {
+            Board board;
+            BoardReader br = new BoardReader(save);
+            board = br.load();
+            boolean flag = false;
+            Move mv = board.getHistoryMove(2);
+            if (mv.getSourceX() == 4 && mv.getSourceY() == 3 && mv.getDestinationX() == 2 && mv.getDestinationY() == 5) flag = true;
+            assertTrue(flag);
+        }
+        catch (IOException e){
+            System.out.println("Wrong path");
+        }
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void getPreviousTurnTest() {
+        Board board = new Board();
+        board.startingPosition();
+        board.doMove(board.getCell(5,0),board.getCell(4,1));
+        Point src = new Point(5,0);
+        Point dest = new Point(4,1);
+        Move mv = new Move(src,dest);
+        board.addMove(mv);
+        assertFalse(board.isHistoryEmpty());
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void getPreviousTurnWithIndexTest() {
+        File save = new File("C:\\saves\\getHistoryMoveTest");
+        try {
+            Board board;
+            BoardReader br = new BoardReader(save);
+            board = br.load();
+            boolean flag = false;
+            Board b = board.getPreviousTurn(0);
+            if(b.getCell(4,3).isWHITE() && !b.getCell(4,3).isQUEEN()) flag = true;
+            assertTrue(flag);
+        }
+        catch (IOException e){
+            System.out.println("Wrong path");
+        }
+    }
+
+
+
+
+
+
+
 }

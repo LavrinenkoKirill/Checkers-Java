@@ -64,7 +64,6 @@ public class BoardReader extends FileReader {
             scan.skip("\n");
             if (scan.hasNextLine()){
                 str = scan.nextLine();
-                System.out.println(str);
                 if (str.lastIndexOf("Match History") != -1) {
                     Point source = new Point(-1,-1);
                     Point destination=  new Point(-1,-1);
@@ -79,11 +78,6 @@ public class BoardReader extends FileReader {
                         else flag = false;
 
                         if (flag){
-                            System.out.println(source.x);
-                            System.out.println(source.y);
-
-                            System.out.println(destination.x);
-                            System.out.println(destination.y);
                             Move mv = new Move(source,destination);
                             board.addMove(mv);
                         }
