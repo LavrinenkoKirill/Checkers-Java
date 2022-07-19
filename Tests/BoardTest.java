@@ -1,17 +1,19 @@
 package Tests;
+
 import IO.BoardReader;
-import Model.*;
+import Model.Board;
+import Model.Move;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class BoardTest {
+public class BoardTest {
 
-    @org.junit.jupiter.api.Test
-    void startingPositionTest() {
+    @org.junit.Test
+    public void startingPositionTest() {
         Board board = new Board();
         board.startingPosition();
         int white_checkers = 0;
@@ -30,8 +32,8 @@ class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void checkEnemiesTest() {
+    @org.junit.Test
+    public void checkEnemiesTest() {
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
@@ -39,15 +41,15 @@ class BoardTest {
         assertTrue(board.checkEnemies(board.getCell(4, 1), board.getCell(2, 3), -1));
     }
 
-    @org.junit.jupiter.api.Test
-    void checkDistanceTest() {
+    @org.junit.Test
+    public void checkDistanceTest() {
         Board board = new Board();
         board.startingPosition();
         assertEquals(0,board.checkDistance(board.getCell(0,0),board.getCell(0,0),board.getCell(0,0)));
     }
 
-    @org.junit.jupiter.api.Test
-    void doQueenMoveTest() {
+    @org.junit.Test
+    public void doQueenMoveTest() {
         File save = new File("C:\\saves\\queen_test");
         try {
             Board board;
@@ -63,8 +65,8 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void checkQueenMoveTest() {
+    @org.junit.Test
+    public void checkQueenMoveTest() {
         File save = new File("C:\\saves\\queen_test");
         try {
             Board board;
@@ -78,8 +80,8 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void checkQueenEnemiesTest() {
+    @org.junit.Test
+    public void checkQueenEnemiesTest() {
         File save = new File("C:\\saves\\cut_queen_test");
         try {
             Board board;
@@ -93,8 +95,8 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void cutQueenEnemiesTest() {
+    @org.junit.Test
+    public void cutQueenEnemiesTest() {
         File save = new File("C:\\saves\\cut_queen_test");
         try {
             Board board;
@@ -112,8 +114,8 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void canMoveTest() {
+    @org.junit.Test
+    public void canMoveTest() {
         File save = new File("C:\\saves\\cant_move_test");
         try {
             Board board;
@@ -129,15 +131,15 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void isValidMoveTest() {
+    @org.junit.Test
+    public void isValidMoveTest() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.isValidMove(board.getCell(5, 0), board.getCell(4, 1)));
     }
 
-    @org.junit.jupiter.api.Test
-    void doMoveTest() {
+    @org.junit.Test
+    public void doMoveTest() {
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0), board.getCell(4,1));
@@ -146,8 +148,8 @@ class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void cutEnemiesTest() {
+    @org.junit.Test
+    public void cutEnemiesTest() {
 
         Board board = new Board();
         board.startingPosition();
@@ -159,8 +161,8 @@ class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void isWinTest() {
+    @org.junit.Test
+    public void isWinTest() {
         int B_WIN = 2;
         Board board = new Board();
         board.startingPosition();
@@ -168,30 +170,30 @@ class BoardTest {
         assertEquals(B_WIN,board.isWin());
     }
 
-    @org.junit.jupiter.api.Test
-    void getBoardSizeTest() {
+    @org.junit.Test
+    public void getBoardSizeTest() {
         Board board = new Board();
         board.startingPosition();
         assertEquals(8,board.getBoardSize());
     }
 
-    @org.junit.jupiter.api.Test
-    void getCellTest() {
+    @org.junit.Test
+    public void getCellTest() {
         Board board = new Board();
         board.startingPosition();
         boolean flag = board.getCell(7, 0).isWHITE() && !board.getCell(7, 0).isQUEEN();
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void isWhiteMoveTest() {
+    @org.junit.Test
+    public void isWhiteMoveTest() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.isWhiteMove());
     }
 
-    @org.junit.jupiter.api.Test
-    void getBoardTest() {
+    @org.junit.Test
+    public void getBoardTest() {
         Board board1 = new Board();
         board1.startingPosition();
         Board board2;
@@ -200,8 +202,8 @@ class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void setCellTest() {
+    @org.junit.Test
+    public void setCellTest() {
         Board board = new Board();
         board.startingPosition();
         board.setCell(0,1,1,true);
@@ -209,8 +211,8 @@ class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.jupiter.api.Test
-    void setMoveTest() {
+    @org.junit.Test
+    public void setMoveTest() {
         boolean black = true;
         Board board = new Board();
         board.startingPosition();
@@ -218,47 +220,47 @@ class BoardTest {
         assertEquals(black,!board.isWhiteMove());
     }
 
-    @org.junit.jupiter.api.Test
-    void setWhiteCounterTest() {
+    @org.junit.Test
+    public void setWhiteCounterTest() {
         Board board = new Board();
         board.startingPosition();
         board.setWhiteCounter(2);
         assertEquals(2,board.getWhiteCounter());
     }
 
-    @org.junit.jupiter.api.Test
-    void setBlackCounterTest() {
+    @org.junit.Test
+    public void setBlackCounterTest() {
         Board board = new Board();
         board.startingPosition();
         board.setBlackCounter(2);
         assertEquals(2,board.getBlackCounter());
     }
 
-    @org.junit.jupiter.api.Test
-    void getWhiteCounterTest() {
+    @org.junit.Test
+    public void getWhiteCounterTest() {
         Board board = new Board();
         board.startingPosition();
         assertEquals(12,board.getWhiteCounter());
     }
 
-    @org.junit.jupiter.api.Test
-    void getBlackCounterTest() {
+    @org.junit.Test
+    public void getBlackCounterTest() {
         Board board = new Board();
         board.startingPosition();
         assertEquals(12,board.getBlackCounter());
     }
 
 
-    @org.junit.jupiter.api.Test
-    void isHistoryEmptyTest() {
+    @org.junit.Test
+    public void isHistoryEmptyTest() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.isHistoryEmpty());
     }
 
 
-    @org.junit.jupiter.api.Test
-    void addMoveTest() {
+    @org.junit.Test
+    public void addMoveTest() {
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0),board.getCell(4,1));
@@ -269,8 +271,8 @@ class BoardTest {
         assertFalse(board.isHistoryEmpty());
     }
 
-    @org.junit.jupiter.api.Test
-    void HistorySizeTest() {
+    @org.junit.Test
+    public void HistorySizeTest() {
         File save = new File("C:\\saves\\History_size_test");
         try {
             Board board;
@@ -283,8 +285,8 @@ class BoardTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void getHistoryMoveTest() {
+    @org.junit.Test
+    public void getHistoryMoveTest() {
         File save = new File("C:\\saves\\getHistoryMoveTest");
         try {
             Board board;
@@ -301,8 +303,8 @@ class BoardTest {
     }
 
 
-    @org.junit.jupiter.api.Test
-    void getPreviousTurnTest() {
+    @org.junit.Test
+    public void getPreviousTurnTest() {
         Board board = new Board();
         board.startingPosition();
         board.doMove(board.getCell(5,0),board.getCell(4,1));
@@ -314,8 +316,8 @@ class BoardTest {
     }
 
 
-    @org.junit.jupiter.api.Test
-    void getPreviousTurnWithIndexTest() {
+    @org.junit.Test
+    public void getPreviousTurnWithIndexTest() {
         File save = new File("C:\\saves\\getHistoryMoveTest");
         try {
             Board board;
@@ -330,11 +332,4 @@ class BoardTest {
             System.out.println("Wrong path");
         }
     }
-
-
-
-
-
-
-
 }

@@ -3,39 +3,38 @@ package Tests;
 import IO.BoardReader;
 import Model.Board;
 import Model.Cell;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class CellTest {
-
+public class CellTest {
     @Test
-    void isFREE() {
+    public void isFREE() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.getCell(4,1).isFREE());
     }
 
     @Test
-    void isBLACK() {
+    public void isBLACK() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.getCell(0,1).isBLACK());
     }
 
     @Test
-    void isWHITE() {
+    public void isWHITE() {
         Board board = new Board();
         board.startingPosition();
         assertTrue(board.getCell(5,0).isWHITE());
     }
 
     @Test
-    void isQUEEN() {
+    public void isQUEEN() {
         File save = new File("C:\\saves\\queen_test");
         try {
             Board board;
@@ -50,7 +49,7 @@ class CellTest {
     }
 
     @Test
-    void isValidCellTest() {
+    public void isValidCellTest() {
         Point ptr = new Point(-1, 1);
         assertFalse(Cell.isValidCell(ptr));
     }

@@ -1,16 +1,16 @@
 package Tests;
 
 import Model.Move;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.awt.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class MoveTest {
+public class MoveTest {
 
     @Test
-    void getSourceTest() {
+    public void getSourceTest() {
         Point first = new Point(1,1);
         Point second = new Point(2,2);
         Move mv = new Move(first,second);
@@ -18,7 +18,7 @@ class MoveTest {
     }
 
     @Test
-    void getDestinationTest() {
+    public void getDestinationTest() {
         Point first = new Point(1,1);
         Point second = new Point(2,2);
         Move mv = new Move(first,second);
@@ -26,7 +26,7 @@ class MoveTest {
     }
 
     @Test
-    void getSourceXTest() {
+    public void getSourceXTest() {
         Point first = new Point(1,3);
         Point second = new Point(2,2);
         Move mv = new Move(first,second);
@@ -34,7 +34,7 @@ class MoveTest {
     }
 
     @Test
-    void getSourceYTest() {
+    public void getSourceYTest() {
         Point first = new Point(1,3);
         Point second = new Point(2,2);
         Move mv = new Move(first,second);
@@ -42,7 +42,7 @@ class MoveTest {
     }
 
     @Test
-    void getDestinationXTest() {
+    public void getDestinationXTest() {
         Point first = new Point(1,3);
         Point second = new Point(2,10);
         Move mv = new Move(first,second);
@@ -50,7 +50,7 @@ class MoveTest {
     }
 
     @Test
-    void getDestinationYTest() {
+    public void getDestinationYTest() {
         Point first = new Point(1,3);
         Point second = new Point(2,10);
         Move mv = new Move(first,second);

@@ -1,16 +1,18 @@
 package Tests;
-import IO.BoardReader;
-import java.io.*;
-import Model.*;
 
+import IO.BoardReader;
+import Model.Board;
+import org.junit.Test;
+
+import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class BoardReaderTest {
+public class BoardReaderTest {
 
-    @org.junit.jupiter.api.Test
-    void loadCorrectFileTest() {
+    @Test
+    public void loadCorrectFileTest() {
         try {
             File save = new File("C:\\saves\\queen_test");
             BoardReader br = new BoardReader(save);
@@ -24,8 +26,8 @@ class BoardReaderTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    void loadIncorrectFileTest() {
+    @Test
+    public void loadIncorrectFileTest() {
         try {
             File save = new File("C:\\saves\\incorrect_test");
             BoardReader br = new BoardReader(save);
@@ -37,6 +39,4 @@ class BoardReaderTest {
             System.out.println("Wrong path");
         }
     }
-
-
 }
