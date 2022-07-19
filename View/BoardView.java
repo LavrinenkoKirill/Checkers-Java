@@ -2,8 +2,7 @@ package View;
 import Model.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.JButton;
-
+import javax.swing.*;
 
 
 public class BoardView extends JButton {
@@ -129,20 +128,6 @@ public class BoardView extends JButton {
 
 
 
-            if (board.isWin() != Board.CONTINUE) {
-                g.setFont(new Font("Arial", Font.BOLD, 20));
-                if (board.isWin() == Board.W_WIN) player = "Game Over! WHITE VICTORY";
-                else player = "Game over! BLACK VICTORY";
-                width = g.getFontMetrics().stringWidth(player);
-                g.setColor(new Color(240, 240, 255));
-                g.fillRoundRect(W / 2 - width / 2 - 5, OFFSET_Y + BOX_SIZE * 4 - 16, width + 10, 30, 10, 10);
-                g.setColor(Color.RED);
-                g.drawString(player, W / 2 - width / 2, OFFSET_Y + BOX_SIZE * 4 + 7);
-            }
-
-
-
-
             if (Cell.isValidCell(selected)) {
                 if ((board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isWHITE()) || (!board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isBLACK())) {
                     g.setColor(Color.GREEN);
@@ -199,6 +184,17 @@ public class BoardView extends JButton {
                 repaint();
                 this.selected.x = -1;
                 this.selected.y = -1;
+
+
+
+                if (board.isWin() != Board.CONTINUE) {
+                    String victory;
+                    //   g.setFont(new Font("Arial", Font.BOLD, 20));
+                    if (board.isWin() == Board.W_WIN) victory = "Game Over! WHITE VICTORY";
+                    else victory = "Game over! BLACK VICTORY";
+                    new PostGameMenu(view,victory);
+                }
+
             }
     }
 

@@ -2,7 +2,7 @@ package View;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import Model.*;
 import IO.*;
@@ -12,7 +12,7 @@ public class GameView extends JFrame {
     private static final int DEFAULT_HEIGHT = 600;
     private int movesIndex = 0;
     private static JMenu matchHistory = new JMenu("Match History");
-    private LinkedList<HistoryButton> buttons = new LinkedList<>();
+    private ArrayList<HistoryButton> buttons = new ArrayList<>();
     public GameView(){
         super("CHECKERS");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -157,14 +157,24 @@ public class GameView extends JFrame {
     }
 
     public void refreshMatchHistory(int lastIndex){
-        for (int i = 0; i < buttons.size(); i++){
-            if (buttons.get(i).getIndex() > lastIndex){
+        for (int i = 0; i < buttons.size(); i++) {
+            if (buttons.get(i).getIndex() > lastIndex) {
                 matchHistory.remove(buttons.get(i));
-                matchHistory.revalidate();
-                matchHistory.repaint();
+                buttons.remove(i);
+                i--;
             }
         }
+        matchHistory.revalidate();
+        matchHistory.repaint();
         movesIndex = lastIndex + 1;
+    }
+
+
+    public void clearHistory(){
+        matchHistory.removeAll();
+        buttons.clear();
+        matchHistory.revalidate();
+        movesIndex = 0;
     }
 
 
