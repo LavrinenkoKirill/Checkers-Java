@@ -26,7 +26,7 @@ public class HistoryButton extends JMenuItem {
 
 
 
-    public HistoryButton(int moveNumber,String str,GameView menu,CheckersAI computer){
+    public HistoryButton(int moveNumber,String str,GameView menu, CheckersAI computer){
         super(str);
         index = moveNumber;
         this.addActionListener(new ActionListener() {
@@ -38,11 +38,7 @@ public class HistoryButton extends JMenuItem {
                     menu.refreshMatchHistory(index);
                     repaint();
 
-                    if ((BoardView.board.isWhiteMove() && computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && computer.getSide() == Board.BLACK)) {
-                        computer.doMove(BoardView.board);
-                        menu.createMoveButton(BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getDestinationX(), BoardView.board.getLastMove().getDestinationY(), computer.getSide(),computer);
-                    }
-
+                    new MyThread(menu);
 
                 }
                 else {

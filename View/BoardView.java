@@ -14,6 +14,8 @@ public class BoardView extends JButton {
     protected static boolean soloMode;
 
 
+
+
     public BoardView(Board b,GameView vw){
         board = b;
         board.startingPosition();
@@ -31,12 +33,9 @@ public class BoardView extends JButton {
         selected = new Point(-1,-1);
         view = vw;
         computer = new CheckersAI(side,3);
-        repaint();
         if (side == Board.WHITE) {
-            computer.doMove(board);
-            view.createMoveButton(board.getLastMove().getSourceY(),board.getLastMove().getSourceX(),board.getLastMove().getDestinationY(),board.getLastMove().getDestinationX(),computer.getSide());
+            new MyThread(view);
         }
-        repaint();
         this.addActionListener(new MouseListener());
     }
 
@@ -167,7 +166,11 @@ public class BoardView extends JButton {
     }
 
     private void MouseClick(int x, int y) {
+        if (soloMode){
+            if (BoardView.board.isWhiteMove() && computer.getSide() == Board.WHITE) return;
+            else if (!BoardView.board.isWhiteMove() && computer.getSide() == Board.BLACK) return;
 
+        }
             if (board.isWin() != Board.CONTINUE) {
                 return;
             }
@@ -196,8 +199,9 @@ public class BoardView extends JButton {
 
 
                 if (soloMode) {
-                    doAIMove();
+                    new MyThread(view);
                 }
+
 
                 if (board.isWin() != Board.CONTINUE) {
                     String victory;
@@ -207,19 +211,6 @@ public class BoardView extends JButton {
                 }
 
             }
-    }
-
-
-    public void doAIMove(){
-        if (BoardView.board.isWhiteMove() && computer.getSide() == Board.WHITE) {
-            computer.doMove(board);
-            view.createMoveButton(board.getLastMove().getSourceX(),board.getLastMove().getSourceY(),board.getLastMove().getDestinationX(),board.getLastMove().getDestinationY(),computer.getSide(),computer);
-        }
-        else if (!BoardView.board.isWhiteMove() && computer.getSide() == Board.BLACK) {
-            computer.doMove(board);
-            view.createMoveButton(board.getLastMove().getSourceX(),board.getLastMove().getSourceY(),board.getLastMove().getDestinationX(),board.getLastMove().getDestinationY(),computer.getSide(),computer);
-        }
-        repaint();
     }
 
 

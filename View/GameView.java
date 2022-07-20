@@ -98,11 +98,8 @@ public class GameView extends JFrame {
                                     if (!turn) turn = true;
                                     else turn = false;
 
-                                    if ((BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.BLACK)) {
-                                        BoardView.computer.doMove(BoardView.board);
-                                        createMoveButton(BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getDestinationY(), BoardView.board.getLastMove().getDestinationX(), BoardView.computer.getSide(), BoardView.computer);
-                                    }
-
+                                    new MyThread(getView());
+                                    repaint();
 
                                 }
                             }
@@ -130,14 +127,13 @@ public class GameView extends JFrame {
                 if (b!=null){
                     refreshMatchHistory(movesIndex - 2);
                     BoardView.board = b;
-                    repaint();
+
 
                     if (BoardView.soloMode) {
-                        if ((BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.BLACK)) {
-                            BoardView.computer.doMove(BoardView.board);
-                            createMoveButton(BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getDestinationX(), BoardView.board.getLastMove().getDestinationY(), BoardView.computer.getSide(), BoardView.computer);
-                        }
+                        new MyThread(getView());
                     }
+
+                    repaint();
 
                 }
                 else JOptionPane.showMessageDialog(turn,"Match History is empty");
@@ -234,6 +230,10 @@ public class GameView extends JFrame {
         buttons.clear();
         matchHistory.revalidate();
         movesIndex = 0;
+    }
+
+    public GameView getView(){
+        return this;
     }
 
 
