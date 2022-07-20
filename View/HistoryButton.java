@@ -35,14 +35,14 @@ public class HistoryButton extends JMenuItem {
                 if (b!=null){
                     BoardView.board = b;
 
+                    menu.refreshMatchHistory(index);
+                    repaint();
+
                     if ((BoardView.board.isWhiteMove() && computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && computer.getSide() == Board.BLACK)) {
                         computer.doMove(BoardView.board);
                         menu.createMoveButton(BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getDestinationY(), BoardView.board.getLastMove().getDestinationX(), computer.getSide(),computer);
                     }
-
-                    menu.refreshMatchHistory(index);
-                    repaint();
-
+                    
 
                 }
                 else {
