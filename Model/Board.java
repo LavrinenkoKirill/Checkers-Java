@@ -54,7 +54,7 @@ public class Board {
         }
     }
 
-    public int checkDistance(Cell move1, Cell move2, Cell destination){
+    private int checkDistance(Cell move1, Cell move2, Cell destination){
         if (move1.row == destination.row && move1.column == destination.column) {
             return 0;
         }
@@ -66,7 +66,7 @@ public class Board {
         }
     }
 
-    public void doQueenMove(Cell source,Cell destination){
+    private void doQueenMove(Cell source,Cell destination){
         int enemy = -1;
         int player = -1;
         if (move == WHITE)
@@ -217,7 +217,7 @@ public class Board {
         }
     }
 
-    public boolean checkQueenMove(Cell source,Cell destination){
+    private boolean checkQueenMove(Cell source,Cell destination){
 
         Point friend = new Point(-1,-1);
         int enemy = -1;
@@ -374,7 +374,7 @@ public class Board {
         return false;
     }
 
-    public boolean checkEnemies(Cell source,Cell destination,int side){
+    private boolean checkEnemies(Cell source,Cell destination,int side){
 
         if (checkDistance(source,source,destination) >= 0) {
             return true;
@@ -439,7 +439,7 @@ public class Board {
         return false;
     }
 
-    public void cutEnemies(Cell source,Cell destination){
+    private void cutEnemies(Cell source,Cell destination){
         int enemy = -1;
         if (move == WHITE)
         {

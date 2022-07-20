@@ -32,87 +32,6 @@ public class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.Test
-    public void checkEnemiesTest() {
-        Board board = new Board();
-        board.startingPosition();
-        board.doMove(board.getCell(5,0), board.getCell(4,1));
-        board.doMove(board.getCell(2,3), board.getCell(3,2));
-        assertTrue(board.checkEnemies(board.getCell(4, 1), board.getCell(2, 3), -1));
-    }
-
-    @org.junit.Test
-    public void checkDistanceTest() {
-        Board board = new Board();
-        board.startingPosition();
-        assertEquals(0,board.checkDistance(board.getCell(0,0),board.getCell(0,0),board.getCell(0,0)));
-    }
-
-    @org.junit.Test
-    public void doQueenMoveTest() {
-        File save = new File("C:\\saves\\queen_test");
-        try {
-            Board board;
-            BoardReader br = new BoardReader(save);
-            board = br.load();
-            board.doQueenMove(board.getCell(7,4),board.getCell(4,7));
-            boolean flag = board.getCell(4, 7).isBLACK() && board.getCell(4, 7).isQUEEN();
-            assertTrue(flag);
-
-        }
-        catch (IOException e){
-            System.out.println("Wrong path");
-        }
-    }
-
-    @org.junit.Test
-    public void checkQueenMoveTest() {
-        File save = new File("C:\\saves\\queen_test");
-        try {
-            Board board;
-            BoardReader br = new BoardReader(save);
-            board = br.load();
-            assertTrue(board.checkQueenMove(board.getCell(7, 4), board.getCell(4, 7)));
-
-        }
-        catch (IOException e){
-            System.out.println("Wrong path");
-        }
-    }
-
-    @org.junit.Test
-    public void checkQueenEnemiesTest() {
-        File save = new File("C:\\saves\\cut_queen_test");
-        try {
-            Board board;
-            BoardReader br = new BoardReader(save);
-            board = br.load();
-            assertTrue(board.checkEnemies(board.getCell(2, 3), board.getCell(4, 1), 0));
-
-        }
-        catch (IOException e){
-            System.out.println("Wrong path");
-        }
-    }
-
-    @org.junit.Test
-    public void cutQueenEnemiesTest() {
-        File save = new File("C:\\saves\\cut_queen_test");
-        try {
-            Board board;
-            BoardReader br = new BoardReader(save);
-            board = br.load();
-            int bc = board.getBlackCounter();
-            board.doQueenMove(board.getCell(0,5),board.getCell(4,1));
-            boolean flag = board.getCell(4, 1).isWHITE() && board.getCell(4, 1).isQUEEN();
-            if (bc - board.getBlackCounter() != 2) flag = false;
-            assertTrue(flag);
-
-        }
-        catch (IOException e){
-            System.out.println("Wrong path");
-        }
-    }
 
     @org.junit.Test
     public void canMoveTest() {
@@ -148,18 +67,6 @@ public class BoardTest {
         assertTrue(flag);
     }
 
-    @org.junit.Test
-    public void cutEnemiesTest() {
-
-        Board board = new Board();
-        board.startingPosition();
-        board.doMove(board.getCell(5,0), board.getCell(4,1));
-        board.doMove(board.getCell(2,3), board.getCell(3,2));
-        int bc = board.getBlackCounter();
-        board.cutEnemies(board.getCell(4,1),board.getCell(2,3));
-        boolean flag = bc - board.getBlackCounter() == 1;
-        assertTrue(flag);
-    }
 
     @org.junit.Test
     public void isWinTest() {

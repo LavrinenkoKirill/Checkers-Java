@@ -30,7 +30,8 @@ public class GameView extends JFrame {
     public GameView(boolean side){
         super("CHECKERS");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        super.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        super.setLocationByPlatform(true);
         createOptionalMenu();
         Board brd = new Board();
         brd.startingPosition();
@@ -81,15 +82,32 @@ public class GameView extends JFrame {
                         BoardReader br = new BoardReader(fileChooser.getSelectedFile());
                         Board b = br.load();
                         if (b != null) {
-                            matchHistory.removeAll();
+                            clearHistory();
                             BoardView.board = b;
                             boolean turn = false;
-                            for(int i = 0; i < BoardView.board.HistorySize(); i++){
-                                createMoveButton(BoardView.board.getHistoryMove(i).getSourceX(),BoardView.board.getHistoryMove(i).getSourceY(),BoardView.board.getHistoryMove(i).getDestinationX(),BoardView.board.getHistoryMove(i).getDestinationY(),turn);
-                                if (!turn) turn = true;
-                                else turn = false;
+                            if (!BoardView.soloMode) {
+                                for (int i = 0; i < BoardView.board.HistorySize(); i++) {
+                                    createMoveButton(BoardView.board.getHistoryMove(i).getSourceX(), BoardView.board.getHistoryMove(i).getSourceY(), BoardView.board.getHistoryMove(i).getDestinationX(), BoardView.board.getHistoryMove(i).getDestinationY(), turn);
+                                    if (!turn) turn = true;
+                                    else turn = false;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < BoardView.board.HistorySize(); i++) {
+                                    createMoveButton(BoardView.board.getHistoryMove(i).getSourceX(), BoardView.board.getHistoryMove(i).getSourceY(), BoardView.board.getHistoryMove(i).getDestinationX(), BoardView.board.getHistoryMove(i).getDestinationY(), turn,BoardView.computer);
+                                    if (!turn) turn = true;
+                                    else turn = false;
+
+                                    if ((BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.BLACK)) {
+                                        BoardView.computer.doMove(BoardView.board);
+                                        createMoveButton(BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getDestinationY(), BoardView.board.getLastMove().getDestinationX(), BoardView.computer.getSide(), BoardView.computer);
+                                    }
+
+
+                                }
                             }
 
+                            matchHistory.repaint();
 
                             br.close();
                             JOptionPane.showMessageDialog(fileChooser, "File '" + fileChooser.getSelectedFile() + " loaded");
@@ -113,6 +131,14 @@ public class GameView extends JFrame {
                     refreshMatchHistory(movesIndex - 2);
                     BoardView.board = b;
                     repaint();
+
+                    if (BoardView.soloMode) {
+                        if ((BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.WHITE) || (!BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.BLACK)) {
+                            BoardView.computer.doMove(BoardView.board);
+                            createMoveButton(BoardView.board.getLastMove().getSourceX(), BoardView.board.getLastMove().getSourceY(), BoardView.board.getLastMove().getDestinationX(), BoardView.board.getLastMove().getDestinationY(), BoardView.computer.getSide(), BoardView.computer);
+                        }
+                    }
+
                 }
                 else JOptionPane.showMessageDialog(turn,"Match History is empty");
             }

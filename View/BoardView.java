@@ -10,8 +10,8 @@ public class BoardView extends JButton {
     private static final int PADDING = 16;
     private Point selected;
     private GameView view;
-    private CheckersAI computer;
-    private boolean soloMode;
+    protected static CheckersAI computer;
+    protected static boolean soloMode;
 
 
     public BoardView(Board b,GameView vw){
