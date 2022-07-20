@@ -10,6 +10,8 @@ public class BoardView extends JButton {
     private static final int PADDING = 16;
     private Point selected;
     private GameView view;
+    private CheckersAI computer;
+    private boolean soloMode;
 
 
     public BoardView(Board b,GameView vw){
@@ -19,13 +21,21 @@ public class BoardView extends JButton {
         repaint();
         view = vw;
         this.addActionListener(new MouseListener());
+        soloMode = false;
     }
 
     public BoardView(Board b,boolean side,GameView vw){
+        soloMode = true;
         board = b;
         board.startingPosition();
         selected = new Point(-1,-1);
         view = vw;
+        computer = new CheckersAI(side,3);
+        repaint();
+        if (side == Board.WHITE) {
+            computer.doMove(board);
+            view.createMoveButton(board.getLastMove().getSourceY(),board.getLastMove().getSourceX(),board.getLastMove().getDestinationY(),board.getLastMove().getDestinationX(),computer.getSide());
+        }
         repaint();
         this.addActionListener(new MouseListener());
     }
@@ -126,8 +136,6 @@ public class BoardView extends JButton {
             g.drawString(player, W / 2 - width / 2, OFFSET_Y + 8 * BOX_SIZE + 2 + 11);
 
 
-
-
             if (Cell.isValidCell(selected)) {
                 if ((board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isWHITE()) || (!board.isWhiteMove() && board.getCell(this.selected.y,this.selected.x).isBLACK())) {
                     g.setColor(Color.GREEN);
@@ -142,6 +150,8 @@ public class BoardView extends JButton {
                 this.selected.x = -1;
                 this.selected.y = -1;
             }
+
+
 
 
         }
@@ -176,9 +186,11 @@ public class BoardView extends JButton {
             }
             else {
                 boolean side;
-                side = !board.isWhiteMove();
+                if (board.isWhiteMove()) side = Board.WHITE;
+                else side = Board.BLACK;
                 if (board.isValidMove(board.getCell(this.selected.y, this.selected.x), board.getCell(y, x))){
-                    view.createMoveButton(this.selected.y,this.selected.x,y,x,side);
+                    if (soloMode) view.createMoveButton(this.selected.y,this.selected.x,y,x,side,computer);
+                    else view.createMoveButton(this.selected.y,this.selected.x,y,x,side);
                 }
                 board.doMove(board.getCell(this.selected.y, this.selected.x), board.getCell(y, x));
                 repaint();
@@ -186,6 +198,7 @@ public class BoardView extends JButton {
                 this.selected.y = -1;
 
 
+                if (soloMode) doAIMove();
 
                 if (board.isWin() != Board.CONTINUE) {
                     String victory;
@@ -196,6 +209,19 @@ public class BoardView extends JButton {
                 }
 
             }
+    }
+
+
+    public void doAIMove(){
+        if (BoardView.board.isWhiteMove() && computer.getSide() == Board.WHITE) {
+            computer.doMove(board);
+            view.createMoveButton(board.getLastMove().getSourceX(),board.getLastMove().getSourceY(),board.getLastMove().getDestinationX(),board.getLastMove().getDestinationY(),computer.getSide(),computer);
+        }
+        else if (!BoardView.board.isWhiteMove() && computer.getSide() == Board.BLACK) {
+            computer.doMove(board);
+            view.createMoveButton(board.getLastMove().getSourceX(),board.getLastMove().getSourceY(),board.getLastMove().getDestinationX(),board.getLastMove().getDestinationY(),computer.getSide(),computer);
+        }
+        repaint();
     }
 
 

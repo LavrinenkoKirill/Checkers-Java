@@ -617,6 +617,7 @@ public class Board {
     public Move getHistoryMove(int index){
         return this.matchHistory.get(index);
     }
+    public Move getLastMove(){return this.matchHistory.getLast();}
 
     public void doMove(Cell source,Cell destination){
         if (isWin() != CONTINUE) {
@@ -824,6 +825,16 @@ public class Board {
             System.out.println("error: " + e.getMessage());
             return null;
         }
+    }
+
+    public Board clone(){
+        Board brd = new Board();
+        brd.startingPosition();
+        for (int i = 0; i < matchHistory.size(); i++){
+            brd.doMove(brd.getCell(matchHistory.get(i).getSourceX(),matchHistory.get(i).getSourceY()),brd.getCell(matchHistory.get(i).getDestinationX(),matchHistory.get(i).getDestinationY()));
+        }
+
+        return brd;
     }
 
 

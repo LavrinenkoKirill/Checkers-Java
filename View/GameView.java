@@ -156,6 +156,39 @@ public class GameView extends JFrame {
         buttons.add(button);
     }
 
+    public void createMoveButton(int sourceRow,int sourceColumn,int destRow,int destColumn,boolean side,CheckersAI computer){
+        String str = "";
+        if (side){
+            str += "Black move: ";
+        }
+        else str+= "White move: ";
+
+        if (sourceColumn == 0) str+="A";
+        else if (sourceColumn == 1) str+="B";
+        else if (sourceColumn == 2) str+="C";
+        else if (sourceColumn == 3) str+="D";
+        else if (sourceColumn == 4) str+="E";
+        else if (sourceColumn == 5) str+="F";
+        else if (sourceColumn == 6) str+="G";
+        else if (sourceColumn == 7) str+="H";
+        str+=String.valueOf(sourceRow);
+        str+=" - ";
+        if (destColumn == 0) str+="A";
+        else if (destColumn == 1) str+="B";
+        else if (destColumn == 2) str+="C";
+        else if (destColumn == 3) str+="D";
+        else if (destColumn == 4) str+="E";
+        else if (destColumn == 5) str+="F";
+        else if (destColumn == 6) str+="G";
+        else if (destColumn == 7) str+="H";
+        str+=String.valueOf(destRow);
+        HistoryButton button = new HistoryButton(movesIndex,str,this,computer);
+        movesIndex++;
+        matchHistory.add(button);
+        buttons.add(button);
+    }
+
+
     public void refreshMatchHistory(int lastIndex){
         for (int i = 0; i < buttons.size(); i++) {
             if (buttons.get(i).getIndex() > lastIndex) {

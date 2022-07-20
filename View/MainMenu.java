@@ -1,4 +1,6 @@
 package View;
+import Model.Board;
+
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -65,20 +67,18 @@ public class MainMenu extends JFrame {
     }
 
     public class ComputerBlackCreateListener implements ActionListener {
-        boolean black = true;
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
-            new GameView(black);
+            new GameView(Board.BLACK);
         }
     }
 
     public class ComputerWhiteCreateListener implements ActionListener {
-        boolean white = false;
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
-            new GameView(white);
+            new GameView(Board.WHITE);
         }
     }
 
