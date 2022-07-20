@@ -1,6 +1,7 @@
 package IO;
 import java.io.*;
 import Model.*;
+import View.BoardView;
 
 public class BoardWriter extends FileWriter {
     public BoardWriter(File file) throws IOException {

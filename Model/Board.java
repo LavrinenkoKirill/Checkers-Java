@@ -52,6 +52,7 @@ public class Board {
                 }
             }
         }
+
     }
 
     private int checkDistance(Cell move1, Cell move2, Cell destination){

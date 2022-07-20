@@ -15,10 +15,20 @@ public class PostGameMenu extends JDialog {
         {
             public void actionPerformed( ActionEvent e )
             {
-                view.clearHistory();
-                view.setVisible(false);
-                view.dispose();
-                new GameView();
+
+                if (BoardView.soloMode) {
+                    boolean side = BoardView.computer.getSide();
+                    view.clearHistory();
+                    view.setVisible(false);
+                    view.dispose();
+                    new GameView(side);
+                }
+                else {
+                    view.clearHistory();
+                    view.setVisible(false);
+                    view.dispose();
+                    new GameView();
+                }
             }
         });
         JButton mainMenu = new JButton("Return to Main Menu");

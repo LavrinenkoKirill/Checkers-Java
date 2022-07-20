@@ -107,17 +107,20 @@ public class CheckersAI {
             {
                 tempBoard = board.clone();
                 tempBoard.doMove(tempBoard.getCell(possibleMoves.get(i).getSourceX(),possibleMoves.get(i).getSourceY()),tempBoard.getCell(possibleMoves.get(i).getDestinationX(),possibleMoves.get(i).getDestinationY()));
-
                 double result = minimax(tempBoard, depth - 1, flipSide(side), !maximizingPlayer, alpha, beta);
 
                 initial = Math.max(result, initial);
                 alpha = Math.max(alpha, initial);
 
-                if(alpha >= beta)
+
+                if(alpha > beta){
                     break;
+                }
+
+
+
             }
         }
-        //minimizing
         else
         {
             initial = Double.POSITIVE_INFINITY;
@@ -128,11 +131,14 @@ public class CheckersAI {
 
                 double result = minimax(tempBoard, depth - 1, flipSide(side), !maximizingPlayer, alpha, beta);
 
-                initial = Math.min(result, initial);
-                alpha = Math.min(alpha, initial);
 
-                if(alpha >= beta)
+                initial = Math.min(result, initial);
+                beta = Math.min(beta, initial);
+
+
+                if(alpha > beta) {
                     break;
+                }
             }
         }
 

@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 import Model.*;
+import View.BoardView;
+
 import java.awt.Point;
 
 public class BoardReader extends FileReader {

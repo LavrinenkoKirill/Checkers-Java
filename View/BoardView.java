@@ -40,6 +40,7 @@ public class BoardView extends JButton {
         this.addActionListener(new MouseListener());
     }
 
+
     public void paint(Graphics g){
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -83,7 +84,6 @@ public class BoardView extends JButton {
                     g.drawOval(cy, cx, CHECKER_SIZE, CHECKER_SIZE);
                 }
 
-                // Black king
                 if (board.getCell(j, i).isBLACK() && board.getCell(j, i).isQUEEN()) {
                     g.setColor(Color.DARK_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
@@ -97,7 +97,6 @@ public class BoardView extends JButton {
                     g.fillOval(cy - 2, cx - 1, CHECKER_SIZE, CHECKER_SIZE);
                 }
 
-                // White checker
                 if (board.getCell(j, i).isWHITE()) {
                     g.setColor(Color.LIGHT_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
@@ -109,7 +108,6 @@ public class BoardView extends JButton {
                     g.drawOval(cy, cx, CHECKER_SIZE, CHECKER_SIZE);
                 }
 
-                // White king
                 if (board.getCell(j, i).isWHITE() && board.getCell(j, i).isQUEEN()) {
                     g.setColor(Color.LIGHT_GRAY);
                     g.fillOval(cy + 2, cx + 1, CHECKER_SIZE, CHECKER_SIZE);
@@ -161,7 +159,6 @@ public class BoardView extends JButton {
 
     private class MouseListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // Get the new mouse coordinates and handle the click
             Point m = BoardView.this.getMousePosition();
             if (m != null) {
                 MouseClick(m.x, m.y);
@@ -198,11 +195,12 @@ public class BoardView extends JButton {
                 this.selected.y = -1;
 
 
-                if (soloMode) doAIMove();
+                if (soloMode) {
+                    doAIMove();
+                }
 
                 if (board.isWin() != Board.CONTINUE) {
                     String victory;
-                    //   g.setFont(new Font("Arial", Font.BOLD, 20));
                     if (board.isWin() == Board.W_WIN) victory = "Game Over! WHITE VICTORY";
                     else victory = "Game over! BLACK VICTORY";
                     new PostGameMenu(view,victory);
