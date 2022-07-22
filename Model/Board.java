@@ -94,6 +94,7 @@ public class Board {
                         source.state = FREE;
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
+                        return;
                     }
                     else {
                         if (checkEnemies(board[i + 1][j - 1], destination, 0)){
@@ -104,6 +105,7 @@ public class Board {
                             board[i][j].state = FREE;
                             board[i][j].queen = false;
                             cutEnemies(board[i + 1][j - 1],destination);
+                            return;
                         }
                     }
                 }
@@ -112,6 +114,7 @@ public class Board {
                 board[i][j].state = player;
                 board[i][j].queen = true;
                 source.queen = false;
+                return;
             }
             i++;
 
@@ -130,6 +133,7 @@ public class Board {
                         source.queen = false;
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
+                        return;
                     }
                     else if (checkEnemies(board[i + 1][j + 1], destination, 1)) {
                         if (move == WHITE) black_counter--;
@@ -139,6 +143,7 @@ public class Board {
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
                         cutEnemies(board[i + 1][j + 1],destination);
+                        return;
                     }
 
                 }
@@ -148,6 +153,7 @@ public class Board {
                 board[i][j].queen = true;
                 source.queen = false;
                 source.state = FREE;
+                return;
             }
             i++;
         }
@@ -165,6 +171,7 @@ public class Board {
                         source.queen = false;
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
+                        return;
                     }
                     else if (checkEnemies(board[i - 1][j - 1], destination, 2)){
                         if (move == WHITE) black_counter--;
@@ -173,6 +180,7 @@ public class Board {
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
                         cutEnemies(board[i - 1][j - 1],destination);
+                        return;
                     }
                 }
             }
@@ -180,6 +188,7 @@ public class Board {
                 board[i][j].state = player;
                 board[i][j].queen = true;
                 source.queen = false;
+                return;
             }
             i--;
         }
@@ -197,6 +206,7 @@ public class Board {
                         board[i - 1][j + 1].queen = true;
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
+                        return;
 
                     }
                     else if (checkEnemies(board[i - 1][j + 1], destination, 3)){
@@ -206,6 +216,7 @@ public class Board {
                         board[i][j].state = FREE;
                         board[i][j].queen = false;
                         cutEnemies(board[i - 1][j + 1],destination);
+                        return;
                     }
                 }
             }
@@ -213,6 +224,7 @@ public class Board {
                 board[i][j].state = player;
                 board[i][j].queen = true;
                 source.queen = false;
+                return;
             }
             i--;
         }
@@ -221,6 +233,7 @@ public class Board {
     private boolean checkQueenMove(Cell source,Cell destination){
 
         Point friend = new Point(-1,-1);
+        Point trg = new Point(-1,-1);
         int enemy = -1;
         int player = -1;
         if (move == WHITE) {
@@ -235,7 +248,7 @@ public class Board {
             for (int j = source.column; j >= 0; j--) {
                 if (i >= BOARD_SIZE) break;
                 if (board[i][j].state == enemy && j != 0 && i != 7) {
-                    if (board[i + 1][j - 1].state == FREE) {
+                    if (board[i + 1][j - 1].state == FREE && (board[i - 1][j + 1].state == FREE || checkDistance(board[i - 1][j + 1],board[i - 1][j + 1],source) >= 0)) {
                         if (checkDistance(board[i + 1][j - 1], board[i + 1][j - 1], destination) >= 0) {
                             if (friend.x == -1 || friend.y == -1) return true;
                             else {
@@ -243,9 +256,19 @@ public class Board {
                             }
                         }
                         else {
-                            if (!checkEnemies(board[i + 1][j - 1], destination, 0)) break;
+                            if (!checkEnemies(board[i + 1][j - 1], destination, 0)) {
+                               break;
+                            }
                             else return true;
                         }
+                    }
+                }
+
+
+                if (board[i][j].state == enemy && checkDistance(board[i][j],board[i][j],destination) == -1){
+                    if (trg.x == -1 || trg.y == -1){
+                        trg.x = board[i][j].row;
+                       trg.y = board[i][j].column;
                     }
                 }
 
@@ -257,21 +280,27 @@ public class Board {
                 }
 
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
-                    if (friend.x == -1 && friend.y == -1) return true;
+                    if (friend.x == -1 && friend.y == -1 && trg.x == -1 && trg.y == -1) return true;
                     else {
-                        return i < friend.x && j > friend.y;
+
+                        return i < friend.x && j > friend.y && i < trg.x && j > trg.y;
                     }
                 }
                 i++;
 
             }
+
+
             i = source.row;
             friend.x = -1;
             friend.y = -1;
+            trg.x = -1;
+            trg.y = -1;
+
             for (int j = source.column; j < BOARD_SIZE; j++) {
                 if (i >= BOARD_SIZE) break;
                 if (board[i][j].state == enemy && i != 7 && j != 7) {
-                    if (board[i + 1][j + 1].state == FREE){
+                    if (board[i + 1][j + 1].state == FREE && (board[i - 1][j - 1].state == FREE || checkDistance(board[i - 1][j - 1],board[i - 1][j - 1],source) >= 0)){
                         if (checkDistance(board[i + 1][j + 1],board[i + 1][j + 1],destination) >= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
@@ -292,10 +321,17 @@ public class Board {
                     }
                 }
 
+                if (board[i][j].state == enemy && checkDistance(board[i][j],board[i][j],destination) == -1){
+                    if (trg.x == -1 || trg.y == -1){
+                        trg.x = board[i][j].row;
+                        trg.y = board[i][j].column;
+                    }
+                }
+
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
-                    if (friend.x == -1 && friend.y == -1) return true;
+                    if (friend.x == -1 && friend.y == -1 && trg.x == -1 && trg.y == -1) return true;
                     else {
-                        return i < friend.x && j < friend.y;
+                        return i < friend.x && j < friend.y && i < trg.x && j < trg.y;
                     }
                 }
                 i++;
@@ -304,10 +340,12 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
+            trg.x = -1;
+            trg.y = -1;
             for (int j = source.column;j >= 0;j--){
                 if (i < 0) break;
                 if (board[i][j].state == enemy && i != 0 && j!=0){
-                    if (board[i - 1][j - 1].state == FREE) {
+                    if (board[i - 1][j - 1].state == FREE && (board[i + 1][j + 1].state == FREE || checkDistance(board[i + 1][j + 1],board[i + 1][j + 1],source) >= 0)) {
                         if (checkDistance(board[i - 1][j - 1],board[i - 1][j - 1],destination)>= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
@@ -328,10 +366,17 @@ public class Board {
                     }
                 }
 
+                if (board[i][j].state == enemy && checkDistance(board[i][j],board[i][j],destination) == -1){
+                    if (trg.x == -1 || trg.y == -1){
+                        trg.x = board[i][j].row;
+                        trg.y = board[i][j].column;
+                    }
+                }
+
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
-                    if (friend.x == -1 && friend.y == -1) return true;
+                    if (friend.x == -1 && friend.y == -1 && trg.x == -1 && trg.y == -1) return true;
                     else {
-                        return i > friend.x && j > friend.y;
+                        return i > friend.x && j > friend.y && i > trg.x && j > trg.y;
                     }
                 }
                 i--;
@@ -340,10 +385,13 @@ public class Board {
             i = source.row;
             friend.x = -1;
             friend.y = -1;
+            trg.x = -1;
+            trg.y = -1;
+
             for (int j = source.column;j < BOARD_SIZE;j++){
                 if (i < 0) break;
                 if (board[i][j].state == enemy && j != 7 && i != 0){
-                    if (board[i - 1][j + 1].state == FREE) {
+                    if (board[i - 1][j + 1].state == FREE && (board[i + 1][j - 1].state == FREE || checkDistance(board[i + 1][j - 1],board[i + 1][j - 1],source) >= 0)) {
                         if (checkDistance(board[i - 1][j + 1], board[i - 1][j + 1], destination) >= 0) {
                             if (friend.x == -1 && friend.y == -1) return true;
                             else {
@@ -364,10 +412,17 @@ public class Board {
                     }
                 }
 
+                if (board[i][j].state == enemy && checkDistance(board[i][j],board[i][j],destination) == -1){
+                    if (trg.x == -1 || trg.y == -1){
+                        trg.x = board[i][j].row;
+                        trg.y = board[i][j].column;
+                    }
+                }
+
                 if (board[i][j].state == FREE && checkDistance(board[i][j],board[i][j],destination)>= 0){
-                    if (friend.x == -1 && friend.y == -1) return true;
+                    if (friend.x == -1 && friend.y == -1 && trg.x == -1 && trg.y == -1) return true;
                     else {
-                        return i > friend.x && j < friend.y;
+                        return i > friend.x && j < friend.y && i > trg.x && j < trg.y;
                     }
                 }
                 i--;
@@ -376,6 +431,16 @@ public class Board {
     }
 
     private boolean checkEnemies(Cell source,Cell destination,int side){
+        /*
+        System.out.println("source");
+        System.out.println(source.row);
+        System.out.println(source.column);
+
+        System.out.println("destination");
+        System.out.println(destination.row);
+        System.out.println(destination.column);
+
+         */
 
         if (checkDistance(source,source,destination) >= 0) {
             return true;
@@ -707,15 +772,13 @@ public class Board {
 
     public int isWin() {
         if (white_counter == 0) {
-            System.out.println("GAME OVER. BLACK PLAYER WINS");
             return B_WIN;
         }
         else if (black_counter == 0) {
-            System.out.println("GAME OVER. WHITE PLAYER WINS");
             return W_WIN;
         }
        else if (move == WHITE && !canMove()) return B_WIN;
-        else if (move == BLACK && !canMove()) return W_WIN;
+       else if (move == BLACK && !canMove()) return W_WIN;
         else return CONTINUE;
 
     }

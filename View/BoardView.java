@@ -32,7 +32,7 @@ public class BoardView extends JButton {
         board.startingPosition();
         selected = new Point(-1,-1);
         view = vw;
-        computer = new CheckersAI(side,3);
+        computer = new CheckersAI(side,2);
         if (side == Board.WHITE) {
             new MyThread(view);
         }
@@ -172,6 +172,7 @@ public class BoardView extends JButton {
 
         }
             if (board.isWin() != Board.CONTINUE) {
+                repaint();
                 return;
             }
             final int W = getWidth(), H = getHeight();
@@ -198,17 +199,20 @@ public class BoardView extends JButton {
                 this.selected.y = -1;
 
 
-                if (soloMode) {
-                    new MyThread(view);
-                }
-
-
                 if (board.isWin() != Board.CONTINUE) {
                     String victory;
                     if (board.isWin() == Board.W_WIN) victory = "Game Over! WHITE VICTORY";
                     else victory = "Game over! BLACK VICTORY";
                     new PostGameMenu(view,victory);
                 }
+
+
+
+                if (soloMode) {
+                    new MyThread(view);
+                }
+
+
 
             }
     }

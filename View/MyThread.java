@@ -12,6 +12,7 @@ public class MyThread implements Runnable{
     }
 
     public void run(){
+
         if (BoardView.board.isWhiteMove() && BoardView.computer.getSide() == Board.WHITE) {
             BoardView.computer.doMove(BoardView.board);
             view.createMoveButton(BoardView.board.getLastMove().getSourceX(),BoardView.board.getLastMove().getSourceY(),BoardView.board.getLastMove().getDestinationX(),BoardView.board.getLastMove().getDestinationY(),BoardView.computer.getSide(),BoardView.computer);
@@ -20,6 +21,16 @@ public class MyThread implements Runnable{
             BoardView.computer.doMove(BoardView.board);
             view.createMoveButton(BoardView.board.getLastMove().getSourceX(),BoardView.board.getLastMove().getSourceY(),BoardView.board.getLastMove().getDestinationX(),BoardView.board.getLastMove().getDestinationY(),BoardView.computer.getSide(),BoardView.computer);
         }
+
+
+        if (BoardView.board.isWin() != Board.CONTINUE) {
+            String victory;
+            if (BoardView.board.isWin() == Board.W_WIN) victory = "Game Over! WHITE VICTORY";
+            else victory = "Game over! BLACK VICTORY";
+            new PostGameMenu(view,victory);
+        }
+
         view.repaint();
+
     }
 }
