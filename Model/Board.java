@@ -97,7 +97,7 @@ public class Board {
                         return;
                     }
                     else {
-                        if (checkEnemies(board[i + 1][j - 1], destination, 0)){
+                        if (checkEnemies(board[i + 1][j - 1], destination, 0,0)){
                             if (move == WHITE) black_counter--;
                             else if (move == BLACK) white_counter--;
                             source.queen = false;
@@ -135,7 +135,7 @@ public class Board {
                         board[i][j].queen = false;
                         return;
                     }
-                    else if (checkEnemies(board[i + 1][j + 1], destination, 1)) {
+                    else if (checkEnemies(board[i + 1][j + 1], destination, 1,0)) {
                         if (move == WHITE) black_counter--;
                         else if (move == BLACK) white_counter--;
                         source.state = FREE;
@@ -173,7 +173,7 @@ public class Board {
                         board[i][j].queen = false;
                         return;
                     }
-                    else if (checkEnemies(board[i - 1][j - 1], destination, 2)){
+                    else if (checkEnemies(board[i - 1][j - 1], destination, 2,0)){
                         if (move == WHITE) black_counter--;
                         else if (move == BLACK) white_counter--;
                         source.queen = false;
@@ -209,7 +209,7 @@ public class Board {
                         return;
 
                     }
-                    else if (checkEnemies(board[i - 1][j + 1], destination, 3)){
+                    else if (checkEnemies(board[i - 1][j + 1], destination, 3,0)){
                         if (move == WHITE) black_counter--;
                         else if (move == BLACK) white_counter--;
                         source.queen = false;
@@ -256,7 +256,7 @@ public class Board {
                             }
                         }
                         else {
-                            if (!checkEnemies(board[i + 1][j - 1], destination, 0)) {
+                            if (!checkEnemies(board[i + 1][j - 1], destination, 0,0)) {
                                break;
                             }
                             else return true;
@@ -308,7 +308,7 @@ public class Board {
                             }
                         }
                         else {
-                            if (!checkEnemies(board[i + 1][j + 1], destination, 1)) break;
+                            if (!checkEnemies(board[i + 1][j + 1], destination, 1,0)) break;
                             else return true;
                         }
                     }
@@ -353,7 +353,7 @@ public class Board {
                             }
                         }
                         else {
-                            if (!checkEnemies(board[i - 1][j - 1], destination, 2)) break;
+                            if (!checkEnemies(board[i - 1][j - 1], destination, 2,0)) break;
                             else return true;
                         }
                     }
@@ -399,7 +399,7 @@ public class Board {
                             }
                         }
                         else {
-                            if (!checkEnemies(board[i - 1][j + 1], destination, 3))break;
+                            if (!checkEnemies(board[i - 1][j + 1], destination, 3,0))break;
                             else return true;
                         }
                     }
@@ -430,17 +430,8 @@ public class Board {
         return false;
     }
 
-    private boolean checkEnemies(Cell source,Cell destination,int side){
-        /*
-        System.out.println("source");
-        System.out.println(source.row);
-        System.out.println(source.column);
-
-        System.out.println("destination");
-        System.out.println(destination.row);
-        System.out.println(destination.column);
-
-         */
+    private boolean checkEnemies(Cell source,Cell destination,int side, int counter){
+        if (counter == 12) return false;
 
         if (checkDistance(source,source,destination) >= 0) {
             return true;
@@ -455,8 +446,8 @@ public class Board {
                     return true;
                 }
                 else {
-                    if (checkEnemies(board[source.row - 2][source.column - 2], destination, 2)){
-                        return checkEnemies(board[source.row - 2][source.column - 2], destination, 2);
+                    if (checkEnemies(board[source.row - 2][source.column - 2], destination, 2,counter + 1)){
+                        return checkEnemies(board[source.row - 2][source.column - 2], destination, 2,counter + 1);
                     }
                 }
             }
@@ -467,8 +458,8 @@ public class Board {
                     return true;
                 }
                 else {
-                    if (checkEnemies(board[source.row - 2][source.column + 2], destination, 3)) {
-                        return checkEnemies(board[source.row - 2][source.column + 2], destination, 3);
+                    if (checkEnemies(board[source.row - 2][source.column + 2], destination, 3,counter + 1)) {
+                        return checkEnemies(board[source.row - 2][source.column + 2], destination, 3, counter + 1);
                     }
                 }
             }
@@ -480,8 +471,8 @@ public class Board {
                     return true;
                 }
                 else {
-                    if (checkEnemies(board[source.row + 2][source.column + 2], destination, 1)) {
-                        return checkEnemies(board[source.row + 2][source.column + 2], destination, 1);
+                    if (checkEnemies(board[source.row + 2][source.column + 2], destination, 1,counter + 1)) {
+                        return checkEnemies(board[source.row + 2][source.column + 2], destination, 1, counter + 1);
                     }
                 }
             }
@@ -493,8 +484,8 @@ public class Board {
                     return true;
                 }
                 else {
-                    if (checkEnemies(board[source.row + 2][source.column - 2], destination, 0)) {
-                        return checkEnemies(board[source.row + 2][source.column - 2], destination, 0);
+                    if (checkEnemies(board[source.row + 2][source.column - 2], destination, 0, counter + 1)) {
+                        return checkEnemies(board[source.row + 2][source.column - 2], destination, 0, counter + 1);
                     }
                 }
             }
@@ -517,7 +508,7 @@ public class Board {
 
         if (source.row > 1 && source.column > 1) {
             if (board[source.row - 1][source.column - 1].state == enemy && board[source.row - 2][source.column - 2].state == FREE) {
-                if (checkEnemies(board[source.row - 2][source.column - 2], destination, 2)) {
+                if (checkEnemies(board[source.row - 2][source.column - 2], destination, 2,0)) {
                     board[source.row - 1][source.column - 1].state = FREE;
                     board[source.row - 1][source.column - 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -536,7 +527,7 @@ public class Board {
 
         if (source.row > 1 && source.column < 6) {
             if (board[source.row - 1][source.column + 1].state == enemy && board[source.row - 2][source.column + 2].state == FREE) {
-                if (checkEnemies(board[source.row - 2][source.column + 2], destination, 3)) {
+                if (checkEnemies(board[source.row - 2][source.column + 2], destination, 3,0)) {
                     board[source.row - 1][source.column + 1].state = FREE;
                     board[source.row - 1][source.column + 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -554,7 +545,7 @@ public class Board {
 
         if (source.row < 6 && source.column < 6) {
             if (board[source.row + 1][source.column + 1].state == enemy && board[source.row + 2][source.column + 2].state == FREE) {
-                if (checkEnemies(board[source.row + 2][source.column + 2], destination, 1)) {
+                if (checkEnemies(board[source.row + 2][source.column + 2], destination, 1,0)) {
                     board[source.row + 1][source.column + 1].state = FREE;
                     board[source.row + 1][source.column + 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -573,7 +564,7 @@ public class Board {
 
         if (source.row < 6 && source.column > 1) {
             if (board[source.row + 1][source.column - 1].state == enemy && board[source.row + 2][source.column - 2].state == FREE) {
-                if (checkEnemies(board[source.row + 2][source.column - 2], destination, 0)) {
+                if (checkEnemies(board[source.row + 2][source.column - 2], destination, 0,0)) {
                     board[source.row + 1][source.column - 1].state = FREE;
                     board[source.row + 1][source.column - 1].queen = false;
                     if (move == WHITE) black_counter--;
@@ -617,7 +608,7 @@ public class Board {
                             return checkDistance(board[source.row - 1][source.column - 1], board[source.row - 1][source.column - 1], destination) >= 0;
                         }
                     }
-                        if (checkEnemies(source,destination,-1)){
+                        if (checkEnemies(source,destination,-1,0)){
                             return true;
                         }
                         else {
@@ -646,7 +637,7 @@ public class Board {
                         }
                     }
 
-                    if (checkEnemies(source,destination,-1)){
+                    if (checkEnemies(source,destination,-1,0)){
                         return true;
                     }
                     else {
